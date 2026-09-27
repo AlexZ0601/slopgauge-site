@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slopgauge: a slop meter for everything you read</title>
+  <meta name="description" content="A free Chrome extension that puts a slop meter on the posts you read and shows the AI-writing patterns behind each score.">
+  <meta property="og:title" content="Slopgauge: a slop meter for everything you read">
+  <meta property="og:description" content="A free Chrome extension that puts a slop meter on the posts you read, from your LinkedIn feed to your inbox.">
+  <meta property="og:image" content="https://slopgauge.com/og.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30"> Slopgauge</a>
+      <nav><a href="#how">How it works</a><a href="#where">Where it works</a><a href="privacy.html">Privacy</a></nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>See the <em>slop</em> before you read it.</h1>
+        <p class="lede">Slopgauge is a free Chrome extension that puts a slop meter on the posts you read, from your LinkedIn feed to your inbox. Hover the meter to see which phrases gave it away.</p>
+        <span class="btn soon" aria-disabled="true">Coming soon to the Chrome Web Store</span>
+        <p class="facts">Free. Runs on your device. No account.</p>
+      </div>
+      <div class="shot">
+        <img src="hero.png" width="648" height="760" alt="A post marked Pure slop, with its flagged phrases highlighted and a popover listing each pattern and why it reads as generated.">
+      </div>
+    </section>
+  </div>
+
+  <section class="block" id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="sub">Chatbot writing has tells, from its favorite words to its favorite setups. Slopgauge counts them.</p>
+      <div class="grid3">
+        <div class="card"><h3>A meter on every post</h3><p>Every post gets a meter, from “No slop” to “Pure slop”, as you scroll. There is nothing to click.</p></div>
+        <div class="card"><h3>The evidence, on hover</h3><p>Hover a meter to see each pattern it found and why it reads as generated. Flagged phrases are highlighted in the post.</p></div>
+        <div class="card"><h3>A quieter feed</h3><p>Turn on “Dim heavy slop” to fade the worst posts. Hover one to read it anyway.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>What the levels mean</h2>
+      <p class="sub">The meter counts named patterns. Long texts are scaled, so an essay isn't flagged just for being long.</p>
+      <div class="levels">
+        <div class="level"><span class="pill p0">&#10003; No slop</span><p>Nothing that reads like chatbot writing.</p></div>
+        <div class="level"><span class="pill p1"><span class="bars"><i class="on"></i><i></i><i></i><i></i></span>A little slop</span><p>One pattern. People write like this too.</p></div>
+        <div class="level"><span class="pill p2"><span class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></span>Some slop</span><p>Two patterns.</p></div>
+        <div class="level"><span class="pill p3"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>Heavy slop</span><p>Three or four. Rare in writing people do by hand.</p></div>
+        <div class="level"><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span><p>Five or more.</p></div>
+      </div>
+      <p class="stat">We tested it on 668 news articles written from the same headlines: 268 by journalists and 400 by AI models. <b>21% of the AI-written articles scored Heavy slop or worse. None of the human-written ones did.</b> It counts patterns; it can't prove who wrote something.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>What it catches</h2>
+      <p class="sub">About 30 patterns, each with a name and a reason. A few of them:</p>
+      <div class="chips">
+        <div class="chip"><b>Chatbot vocabulary</b>delve, leverage, a testament to</div>
+        <div class="chip"><b>Binary contrast</b>It's not a tool. It's a teammate.</div>
+        <div class="chip"><b>Throat-clearing</b>Here's the thing:</div>
+        <div class="chip"><b>Colon reveal</b>The best part: it's free.</div>
+        <div class="chip"><b>Engagement bait</b>Agree? Thoughts?</div>
+        <div class="chip"><b>Chatbot leftovers</b>I hope this helps! [Your Name]</div>
+        <div class="chip"><b>Negative listing</b>Not a sprint. Not a marathon.</div>
+        <div class="chip"><b>Rule of three</b>fast, simple, and secure</div>
+        <div class="chip"><b>Essay transitions</b>Moreover… Furthermore…</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="where">
+    <div class="wrap">
+      <h2>Where it works</h2>
+      <ul class="sites">
+        <li>LinkedIn</li><li>X</li><li>Reddit</li><li>Gmail</li><li>Hacker News</li><li>GitHub</li><li>YouTube comments</li><li>Google Docs</li><li>Articles on most sites</li>
+      </ul>
+      <p class="sub">Anywhere else, select text and right-click “Check with Slopgauge”, or paste it into the toolbar popup.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Private by design</h2>
+      <p class="sub">Slopgauge runs entirely in your browser. It has no servers and never sends anything you read to anyone. <a href="privacy.html">Read the privacy policy</a>.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; 2026 Slopgauge</span>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
+      <span>Detection rules adapted from <a href="https://github.com/petergyang/no-ai-slop">no-ai-slop</a> (MIT).</span>
+    </div>
+  </footer>
+</body>
+</html>
