@@ -5,21 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy | Slopgauge</title>
   <meta name="description" content="Slopgauge runs entirely in your browser. It collects nothing and sends nothing you read to anyone.">
+  <meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.png">
+  <link rel="preload" href="fonts/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
-    <header class="top">
-      <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30"> Slopgauge</a>
-      <nav><a href="./">Home</a></nav>
+    <header class="bar">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30">Slopgauge</a>
+      <nav aria-label="Site"><a href="./">Home</a></nav>
     </header>
 
-    <main class="doc">
+    <main class="doc" id="main">
       <h1>Privacy Policy</h1>
       <p class="meta">Effective September 27, 2026</p>
 
-      <p class="summary"><b>In short:</b> Slopgauge does not collect or share any personal data. It analyzes text inside your browser and sends nothing you read to anyone. It has no servers and no analytics.</p>
+      <aside class="facts privacy" aria-label="Privacy Facts summary">
+        <h2>Privacy Facts</h2>
+        <p class="size"><span>Serving size</span><span>Everything you read</span></p>
+        <div class="rule-10"></div>
+        <p class="amount">Amount sent to us</p>
+        <p class="total"><span>Your data</span><span>0</span></p>
+        <div class="rule-5"></div>
+        <table>
+          <tr><td><b>Personal data collected</b></td><td>0</td></tr>
+          <tr><td><b>Servers</b></td><td>0</td></tr>
+          <tr><td><b>Analytics and trackers</b></td><td>0</td></tr>
+          <tr><td><b>Accounts</b></td><td>0</td></tr>
+          <tr><td><b>Network requests</b></td><td>1*</td></tr>
+        </table>
+        <div class="rule-10"></div>
+        <p class="note">* Only on Google Docs: the open doc is downloaded as plain text from Google, so it can be read in your browser.</p>
+      </aside>
+
+      <h2>In short</h2>
+      <p>Slopgauge does not collect or share any personal data. It analyzes text inside your browser and sends nothing you read to anyone. It has no servers and no analytics.</p>
 
       <h2>What Slopgauge reads</h2>
       <p>To show its slop meter, Slopgauge reads the text of posts on the pages you visit. It also reads text you choose to check with the right-click menu or paste into its toolbar popup. It analyzes that text with rules that run in your browser, then discards it. The text is never stored and never leaves your device.</p>
@@ -57,9 +80,10 @@
       <p>Questions: <a href="mailto:support@slopgauge.com">support@slopgauge.com</a></p>
     </main>
   </div>
+
   <footer>
     <div class="wrap">
-      <span>&copy; 2026 Slopgauge</span>
+      <span><b>Distributed by Slopgauge</b></span>
       <a href="./">Home</a>
       <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
     </div>
