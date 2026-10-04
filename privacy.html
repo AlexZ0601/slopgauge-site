@@ -21,7 +21,7 @@
 
     <main class="doc" id="main">
       <h1>Privacy Policy</h1>
-      <p class="meta">Effective September 27, 2026</p>
+      <p class="meta">Effective October 4, 2026</p>
 
       <aside class="facts privacy" aria-label="Privacy Facts summary">
         <h2>Privacy Facts</h2>
@@ -50,6 +50,12 @@
       <h2>Google Docs</h2>
       <p>Google Docs draws documents on a canvas, so their text isn't available on the page. When you open a Google Doc, Slopgauge downloads that document as plain text from Google, the same as choosing File &gt; Download &gt; Plain text, using your existing Google session. That request goes only to Google, for a document you already have open. The text is analyzed in your browser and not stored or sent anywhere else. This is the only network request Slopgauge makes.</p>
 
+      <h2>Deep check</h2>
+      <p>Deep check is an optional, more thorough check you can turn on in the toolbar popup. It runs a neural AI-text detector on your computer, in a hidden page that belongs to the extension. The detector ships inside the extension, so turning it on downloads nothing, and the text it checks never leaves your device.</p>
+
+      <h2>The essay checker on slopgauge.com</h2>
+      <p>The essay checker at <a href="check.html">slopgauge.com/check</a> runs the same detector in your browser tab. Text you paste there is analyzed on your device and is not uploaded or stored. When you open a full report from the extension, the text is passed in the part of the address after the “#”, which browsers never send to a server; the page reads it and removes it from the address bar. Like any website, slopgauge.com is served by a hosting provider (GitHub Pages), which may log standard request data such as IP addresses. We run no analytics on the site.</p>
+
       <h2>What Slopgauge stores</h2>
       <p>Only your settings, such as which sites and rules you turned off. They are kept in Chrome's extension storage. If you use Chrome sync, Chrome syncs these settings between your devices through your Google account. Slopgauge never stores the text of anything you read.</p>
 
@@ -68,6 +74,7 @@
         <tr><td><code>storage</code></td><td>To save your settings.</td></tr>
         <tr><td><code>activeTab</code></td><td>So the toolbar popup can show a summary for the page you're on.</td></tr>
         <tr><td><code>contextMenus</code></td><td>For the right-click “Check with Slopgauge” option.</td></tr>
+        <tr><td><code>offscreen</code></td><td>To run the optional Deep check detector in a hidden extension page, only after you turn it on.</td></tr>
       </table>
 
       <h2>Chrome Web Store User Data Policy</h2>

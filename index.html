@@ -22,7 +22,7 @@
   <div class="wrap">
     <header class="bar">
       <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30">Slopgauge</a>
-      <nav aria-label="Sections"><a href="#look">In your feed</a><a href="#ingredients">Ingredients</a><a href="privacy.html">Privacy</a></nav>
+      <nav aria-label="Sections"><a href="#look">In your feed</a><a href="check.html">Essay checker</a><a href="#ingredients">Ingredients</a><a href="privacy.html">Privacy</a></nav>
     </header>
 
     <main id="main">
@@ -30,8 +30,8 @@
         <div class="pitch">
           <h1 id="headline">Slop Facts for every post you read.</h1>
           <p class="lede">Slopgauge is a free Chrome extension that puts a slop meter on the posts in your feed and shows which phrases gave each one away. Hover a line on this label to find it in the post.</p>
-          <span class="cta soon" aria-disabled="true">Coming soon to the Chrome Web Store</span>
-          <p class="fine">Free. Runs on your device. No account.</p>
+          <a class="cta" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome, it’s free</a>
+          <p class="fine">Free. Runs on your device. No account. Checking a whole essay? <a href="check.html">Use the essay checker</a>.</p>
         </div>
 
         <div class="specimen">
@@ -94,13 +94,13 @@
         <h2 class="panel-title" id="levels-title">Slop level guide</h2>
         <div class="thick"></div>
         <div class="guide">
-          <div class="row"><span class="pill p0">No slop</span><p>Nothing that reads like chatbot writing.</p></div>
-          <div class="row"><span class="pill p1"><span class="bars"><i class="on"></i><i></i><i></i><i></i></span>A little slop</span><p>One pattern. People write like this too.</p></div>
-          <div class="row"><span class="pill p2"><span class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></span>Some slop</span><p>Two patterns.</p></div>
-          <div class="row"><span class="pill p3"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>Heavy slop</span><p>Three or four. Rare in writing people do by hand.</p></div>
-          <div class="row"><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span><p>Five or more.</p></div>
+          <div class="row"><span class="pill p0">No slop</span><p>Reads like writing people do by hand.</p></div>
+          <div class="row"><span class="pill p1"><span class="bars"><i class="on"></i><i></i><i></i><i></i></span>A little slop</span><p>Some chatbot habits. About 1 in 10 human posts lands here too.</p></div>
+          <div class="row"><span class="pill p2"><span class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></span>Some slop</span><p>Clearly templated. About 3 in 100 human posts.</p></div>
+          <div class="row"><span class="pill p3"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>Heavy slop</span><p>Rare in writing people do by hand: about 1 in 100.</p></div>
+          <div class="row"><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span><p>About 3 in 1,000 human posts.</p></div>
           <div class="thin"></div>
-          <p class="foot">We tested it on 668 news articles written from the same headlines: 268 by journalists and 400 by AI models. <b>21% of the AI-written articles scored Heavy slop or worse. None of the human-written ones did.</b> A repeated habit counts once, so a long post isn't flagged just for being long.</p>
+          <p class="foot">The level comes from a small model trained on about 120,000 posts, tweets, essays and articles by people and by GPT-4o, Claude, Gemini, Llama and others, which weighs word choice and rhythm together with the named patterns. On posts it had never seen, with 5% of human posts flagged, <b>it caught 59% of AI-written social posts and 95% of AI-written Reddit posts, and flagged none of the human tweets or English learners' essays.</b> Turn on Deep check in the popup to add a larger neural model on your computer.</p>
         </div>
       </section>
 
@@ -111,11 +111,26 @@
         <p class="contains"><b>Contains:</b> em dashes, emoji bullets, pasted markdown.</p>
       </section>
 
+      <section class="panel" id="essays" aria-labelledby="essays-title">
+        <h2 class="panel-title" id="essays-title">Checking a whole essay?</h2>
+        <div class="thick"></div>
+        <div class="storage">
+          <div>
+            <p>Paste it into the essay checker for a full report.</p>
+            <p>It marks the sentences that read as AI-written, tells you how much of the text does, and lists the patterns behind it. Free, and it runs in your browser like the extension: nothing you paste is uploaded.</p>
+          </div>
+          <div>
+            <p>Made with teachers in mind, and honest about its limits: about 1 in 100 human-written essays is still called "Likely AI-written", so a report is a reason to talk with the writer, not proof.</p>
+            <p><a class="cta" href="check.html">Open the essay checker</a></p>
+          </div>
+        </div>
+      </section>
+
       <section class="panel" id="where" aria-labelledby="where-title">
         <h2 class="panel-title" id="where-title">Works on</h2>
         <div class="thick"></div>
         <ul class="sites">
-          <li>LinkedIn</li><li>X</li><li>Reddit</li><li>Gmail</li><li>Hacker News</li><li>GitHub</li><li>YouTube comments</li><li>Google Docs</li><li>Articles on most sites</li>
+          <li>LinkedIn</li><li>X</li><li>Reddit</li><li>Facebook</li><li>Bluesky</li><li>YouTube comments</li><li>Gmail</li><li>Hacker News</li><li>GitHub</li><li>Mastodon and forums</li><li>Google Docs</li><li>Articles on most sites</li>
         </ul>
         <p class="lead">Anywhere else, select text and right-click “Check with Slopgauge”, or paste it into the toolbar popup.</p>
       </section>
@@ -137,7 +152,7 @@
 
       <section class="close" aria-labelledby="close-title">
         <h2 id="close-title">Put a slop label on everything you read.</h2>
-        <span class="cta soon" aria-disabled="true">Coming soon to the Chrome Web Store</span>
+        <a class="cta" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome, it’s free</a>
       </section>
     </main>
   </div>
