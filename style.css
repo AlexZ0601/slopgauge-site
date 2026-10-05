@@ -17,6 +17,8 @@
   --red: #d8301f;
   --red-wash: rgba(216, 48, 31, 0.11);
   --amber-wash: rgba(214, 152, 0, 0.17);
+  --blue: #2c5fd6;
+  --blue-wash: rgba(44, 95, 214, 0.1);
   --sheen: rgba(255, 255, 255, 0.75);
   --display: "Funnel Display", "Helvetica Neue", Arial, sans-serif;
   --sans: "Funnel Sans", "Helvetica Neue", Arial, sans-serif;
@@ -192,6 +194,8 @@ footer b { color: var(--ink); font-weight: 650; }
 .checker-head .lede { margin: 0; font-size: 18px; }
 .editor { background: var(--card); border: 1px solid var(--rule); border-radius: 6px; margin-bottom: clamp(64px, 9vw, 112px); }
 .editor:focus-within { border-color: var(--ink-3); }
+.editor.drop { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-wash); }
+.textlink.file { cursor: pointer; }
 .editor textarea { display: block; width: 100%; min-height: clamp(360px, 58vh, 700px); border: 0; resize: none; background: transparent; color: var(--ink); padding: clamp(20px, 3vw, 36px) clamp(18px, 3.4vw, 44px); font: 400 18.5px/1.7 var(--sans); }
 .editor textarea:focus { outline: none; }
 .editor textarea::placeholder { color: var(--ink-3); }
@@ -237,6 +241,62 @@ footer b { color: var(--ink); font-weight: 650; }
 .method { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px clamp(24px, 5vw, 72px); padding: clamp(64px, 8vw, 104px) 0; border-top: 1px solid var(--rule); }
 .method h2 { grid-column: 1 / -1; margin-bottom: 6px; }
 .method p { margin: 0 0 14px; color: var(--ink-2); max-width: 36em; }
+
+/* Kind of text, and their own writing (optional) */
+.kind { display: inline-flex; align-items: center; gap: 8px; }
+.kind select { font: 500 13px var(--sans); text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 4px 6px; }
+.known { border-top: 1px solid var(--rule); padding: 0 clamp(18px, 3.4vw, 44px); }
+.known summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 14px 0; cursor: pointer; list-style: none; }
+.known summary::-webkit-details-marker { display: none; }
+.known summary::before { content: "+"; font: 600 16px var(--mono); color: var(--blue); width: 14px; }
+.known[open] summary::before { content: "−"; }
+.known summary b { font-weight: 650; }
+.known .hint { margin: 0 0 12px; color: var(--ink-2); font-size: 15px; max-width: 46em; }
+.known textarea { display: block; width: 100%; min-height: 160px; resize: vertical; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink); padding: 14px 16px; font: 400 16px/1.6 var(--sans); }
+.known textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+.known .label { margin: 8px 0 16px; }
+
+.odds, .voice { border-top: 1px solid var(--rule); padding-top: 12px; }
+.odds p, .voice p { margin: 6px 0 0; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+.odds b, .voice b { color: var(--ink); font-weight: 650; }
+.odds .bar { position: relative; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 8%, transparent); margin: 8px 0 2px; }
+.odds .bar i { position: absolute; top: -3px; width: 3px; height: 14px; border-radius: 1px; background: var(--red); }
+.odds .bar span { position: absolute; top: 0; bottom: 0; border-radius: 4px; }
+.odds .bar .h { background: color-mix(in srgb, var(--ink) 25%, transparent); }
+.odds .bar .a { background: var(--slop); opacity: 0.7; }
+.voice .verdict { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; padding: 5px 11px; border-radius: 999px; font: 650 13px/1.2 var(--sans); }
+.voice .verdict.same { background: var(--blue-wash); color: var(--blue); }
+.voice .verdict.unsure { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-2); }
+.voice .verdict.diff { background: var(--blue); color: #fff; }
+.voice progress { width: 100%; height: 6px; margin-top: 8px; accent-color: var(--blue); }
+.sw.v { width: 22px; height: 6px; border-radius: 0; background: none; border-bottom: 2px dashed var(--blue); }
+.marked .v-off { border-bottom: 2px dashed var(--blue); }
+
+/* Check a class */
+.class-in .dropzone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; padding: clamp(28px, 4vw, 48px) clamp(18px, 3.4vw, 44px); }
+.class-in .dropzone p { margin: 0; color: var(--ink-2); }
+.class-in .dropzone b { display: block; font: 700 clamp(24px, 2.6vw, 32px)/1.15 var(--display); letter-spacing: -0.02em; color: var(--ink); margin-bottom: 4px; }
+.filelist { list-style: none; margin: 0; padding: 0 clamp(18px, 3.4vw, 44px); }
+.filelist li { display: flex; align-items: center; gap: 14px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+.filelist li span:first-child { flex: 1; }
+.class-results { margin-bottom: clamp(64px, 9vw, 112px); }
+.class-results .summary { font: 650 clamp(20px, 2vw, 26px)/1.35 var(--display); letter-spacing: -0.015em; margin: 0 0 20px; max-width: 40em; }
+.groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.group { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--blue); border-radius: 6px; padding: 14px 18px; }
+.group p { margin: 6px 0; }
+.group ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 14.5px; }
+.ranking { width: 100%; border-collapse: collapse; font-size: 15px; }
+.ranking th { text-align: left; font: 500 11px/1.4 var(--mono); font-stretch: 87.5%; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-3); padding: 12px 12px; border-bottom: 1px solid var(--rule); }
+.ranking td { padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.ranking tr:last-child td { border-bottom: 0; }
+.ranking .tag { margin-left: 8px; font: 600 10px var(--mono); text-transform: uppercase; color: var(--blue); background: var(--blue-wash); padding: 2px 6px; border-radius: 3px; }
+.meter-cell { display: inline-flex; align-items: center; gap: 8px; }
+.fillbar { display: inline-block; width: 70px; height: 8px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 8%, transparent); overflow: hidden; }
+.fillbar i { display: block; height: 100%; background: var(--slop-deep); }
+@media (max-width: 640px) {
+  .ranking th:nth-child(3), .ranking td:nth-child(3), .ranking th:nth-child(6), .ranking td:nth-child(6) { display: none; }
+  .ranking td, .ranking th { padding: 8px 6px; }
+}
 
 /* ---------- Privacy page ---------- */
 .doc { max-width: 720px; padding: clamp(16px, 3vw, 44px) 0 88px; }

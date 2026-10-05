@@ -235,5 +235,5 @@
   // ---------- A hundred dots each ----------
   const dots = (el, n, cls) => el.replaceChildren(...Array.from({ length: 100 }, (_, i) => h('i', { class: i < n ? cls : '' })));
   dots($('dotsHuman'), 1, 'miss');
-  dots($('dotsAI'), 87, 'hit');
+  dots($('dotsAI'), 72, 'hit');
 })();

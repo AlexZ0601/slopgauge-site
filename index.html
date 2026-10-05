@@ -7,7 +7,7 @@
   <meta name="description" content="A free Chrome extension that measures the AI slop in every post you scroll past and shows the phrases that gave it away, plus a free essay checker. Runs on your device.">
   <meta property="og:title" content="Slopgauge: how much of this is slop?">
   <meta property="og:description" content="A free Chrome extension that measures the AI slop in every post you scroll past, and a free essay checker. Runs on your device.">
-  <meta property="og:image" content="https://slopgauge.com/og.png?v=3">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=4">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#ebebe4">
@@ -25,6 +25,7 @@
       <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
       <nav aria-label="Site">
         <a href="check.html">Essay checker</a>
+        <a href="class.html">Check a class</a>
         <a href="#sure">How sure is it</a>
         <a href="privacy.html">Privacy</a>
         <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
@@ -95,26 +96,26 @@
         <div class="head">
           <span class="label">How sure is it</span>
           <h2 id="sure-title">It gets it wrong sometimes. Here’s how often.</h2>
-          <p class="lede">The essay checker, tested on 1,621 essays, stories and news articles it had never seen. No detector can prove who wrote a text, and this one doesn’t pretend to.</p>
+          <p class="lede">The essay checker on 2,999 school essays by students in grades 6 to 12, and 2,000 essays by AI on the same prompts. No detector can prove who wrote a text, and this one doesn’t pretend to.</p>
         </div>
         <div class="trials">
           <div class="trial">
-            <span class="label">100 texts by people</span>
+            <span class="label">100 essays by students</span>
             <div class="dots" id="dotsHuman" aria-hidden="true"></div>
             <div class="big">1</div>
-            <p>was wrongly called Likely AI-written. Essays by English learners were in the test.</p>
+            <p>was wrongly called Likely AI-written. The checker sets this line separately for each kind of text, so it stays near 1 in 100.</p>
           </div>
           <div class="trial">
-            <span class="label">100 texts by AI</span>
+            <span class="label">100 essays by AI</span>
             <div class="dots" id="dotsAI" aria-hidden="true"></div>
-            <div class="big">87</div>
-            <p>were called Likely AI-written. The other 13 got through.</p>
+            <div class="big">72</div>
+            <p>were called Likely AI-written. The other 28 got through: we chose fewer false accusations over catching more.</p>
           </div>
           <div class="trial">
-            <span class="label">Half by people, half by AI</span>
-            <div class="split" aria-hidden="true"><span><i style="width:4%"></i><em>Human half</em></span><span><i style="width:64%"></i><em>AI half</em></span></div>
-            <div class="big">64%</div>
-            <p>of the AI half was marked, and 4% of the human half.</p>
+            <span class="label">Half by a student, half by AI</span>
+            <div class="split" aria-hidden="true"><span><i style="width:2%"></i><em>Student half</em></span><span><i style="width:44%"></i><em>AI half</em></span></div>
+            <div class="big">44%</div>
+            <p>of the AI half was marked, and 2% of the student’s half.</p>
           </div>
         </div>
         <p class="caveat"><b>A high reading is a reason to look closer, never proof on its own.</b> Short texts are the hardest: under a few hundred words, results are less reliable.</p>
@@ -125,8 +126,8 @@
           <div>
             <span class="label">The essay checker</span>
             <h2 id="essays-title" style="margin-top:14px">Got a whole essay? Pour it in.</h2>
-            <p class="lede">The free checker marks every sentence that reads as AI-written, tells you how much of the text does, and lists the tells behind it. Built with teachers in mind, and it runs in your browser too.</p>
-            <div class="actions"><a class="btn" href="check.html">Open the essay checker</a></div>
+            <p class="lede">The free checker marks every sentence that reads as AI-written, tells you how much of the text does, and how unusual that is for that kind of writing. Paste something the student wrote before, and it checks whether each part sounds like them. Or drop in a whole class and see who to read first. It all runs in your browser.</p>
+            <div class="actions"><a class="btn" href="check.html">Open the essay checker</a><a class="btn ghost" href="class.html">Check a class</a></div>
           </div>
           <div class="slip" aria-hidden="true">
             <div class="top"><span>Slopgauge · Lab slip</span><span>No. 0412</span></div>
@@ -178,10 +179,10 @@
     </div>
   </footer>
 
-  <script src="js/model.js?v=3"></script>
-  <script src="js/style.js?v=3"></script>
-  <script src="js/detector.js?v=3"></script>
-  <script src="js/gauge.js?v=3"></script>
-  <script src="js/home.js?v=3"></script>
+  <script src="js/model.js?v=4"></script>
+  <script src="js/style.js?v=4"></script>
+  <script src="js/detector.js?v=4"></script>
+  <script src="js/gauge.js?v=4"></script>
+  <script src="js/home.js?v=4"></script>
 </body>
 </html>

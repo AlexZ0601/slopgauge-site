@@ -41,3 +41,15 @@ labels, specimen paragraphs, tally sheets.
 
 ## Caching
 GitHub Pages caches files for 10 minutes. Bump the `?v=` on CSS and JS links when they change.
+
+## The checker's evidence
+- Kind of text (`js/odds.js`, `scripts/odds/calibrate.js`): thresholds per kind, each set so about 1
+  in 100 human texts of that kind is called "Likely AI-written", and the "How unusual is this score?"
+  odds. School essays (grades 6 to 12) are the default; they were tested on PERSUADE 2.0 (used only
+  for testing and thresholds) and AI essays on the same prompts (DAIGT).
+- Their own writing (`src/voice-runtime.js` → `js/vendor/`, `models/voice/`, `js/voice-cal.js`):
+  LUAR style vectors in the browser; a part is marked (dashed blue) only where a writer's own text
+  lands under 2 times in 100.
+- Check a class (`class.html`, `js/class.js`): ranking, plus groups of essays that read as AI and
+  share unusual wording (`scripts/class/simulate.js`).
+- Rebuild the vendored runtimes with `npm install && npm run build:voice`.

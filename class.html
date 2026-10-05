@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check a class | Slopgauge</title>
+  <meta name="description" content="Measure a whole class's essays at once: which read as AI-written, and which share unusual wording. Free, in your browser; nothing is uploaded.">
+  <meta property="og:title" content="Slopgauge: check a whole class at once">
+  <meta property="og:description" content="Drop in a class's essays. Each one is measured, and essays that read as AI and share unusual wording are grouped. Nothing leaves your browser.">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=3">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#ebebe4">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="favicon.png">
+  <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/funnel-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header class="bar">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
+      <nav aria-label="Site">
+        <a href="check.html">Essay checker</a>
+        <a href="class.html" aria-current="page">Check a class</a>
+        <a href="privacy.html">Privacy</a>
+        <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <div class="checker-head">
+        <h1>Check a whole class.</h1>
+        <p class="lede">Drop in every essay from an assignment. Slopgauge measures each one, ranks them, and groups essays that read as AI and share unusual wording, the trace left when several students paste the same prompt into a chatbot. Free, and nothing leaves your browser.</p>
+      </div>
+
+      <form class="editor class-in" id="form">
+        <div class="dropzone" id="drop">
+          <p><b>Drop essays here</b> Word, PDF or text files, as many as you like.</p>
+          <label class="btn ghost small">Choose files<input type="file" id="files" multiple accept=".txt,.md,.docx,.pdf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label>
+        </div>
+        <details class="known">
+          <summary><b>Or paste them</b> <span class="label">One after another, with a line of three dashes (---) between essays</span></summary>
+          <label for="paste" class="visually-hidden">Essays, separated by ---</label>
+          <textarea id="paste" spellcheck="false" placeholder="First essay…&#10;---&#10;Second essay…"></textarea>
+        </details>
+        <ul class="filelist" id="list"></ul>
+        <div class="toolbar">
+          <div class="left"><label class="label kind">Kind of text <select id="kind"></select></label><span class="label" id="count">No essays yet</span></div>
+          <div class="right"><span class="label privacy-note">Stays in your browser</span><button class="btn small" type="submit" id="go">Measure the class</button></div>
+        </div>
+      </form>
+
+      <section id="results" class="class-results" hidden aria-live="polite">
+        <p class="summary" id="summary"></p>
+        <div class="groups" id="groups"></div>
+        <div class="paper">
+          <table class="ranking">
+            <thead><tr><th>#</th><th>Essay</th><th>Words</th><th>Reads as AI</th><th>Verdict</th><th>Tells</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <p class="fine">No detector can prove who wrote a text. About 1 in 100 essays by students is still called “Likely AI-written”, and shared wording can have honest causes, like a quotation everyone used. Treat this page as a list of essays to read closely and talk about, never as proof.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span><b>Slopgauge</b> · Free, and it runs on your device.</span>
+      <nav aria-label="Footer">
+        <a href="./">Chrome extension</a>
+        <a href="check.html">Essay checker</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/model.js?v=4"></script>
+  <script src="js/style.js?v=4"></script>
+  <script src="js/detector.js?v=4"></script>
+  <script src="js/odds.js?v=4"></script>
+  <script src="js/report.js?v=4"></script>
+  <script src="js/class.js?v=4"></script>
+  <script src="js/class-page.js?v=4"></script>
+</body>
+</html>

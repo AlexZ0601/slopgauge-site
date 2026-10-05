@@ -842,6 +842,42 @@
   // (see scripts/model/). Without it, or for very short texts, the level is the signal count.
   // With Deep check on, `neural` is the neural detector's logit for the text: the level then comes
   // from a blend of both models, calibrated the same way (neural/config.js).
+  // The style model learned from texts of 20 to 320 words. A long document (a Google Doc, a long
+  // article) is scored the way the essay checker scores it: in parts of about 220 words, averaged,
+  // with each part seeing only its own rule hits. Up to 60 parts, spread evenly through the text.
+  const LONG_TEXT = 400;
+  function assessLong(S, text, findings) {
+    const sents = sentences(text).filter((x) => x.words > 0);
+    const parts = [];
+    let from = null;
+    let n = 0;
+    for (const x of sents) {
+      if (from === null) from = x.start;
+      n += x.words;
+      if (n >= 220) {
+        parts.push([from, x.end]);
+        from = null;
+        n = 0;
+      }
+    }
+    if (from !== null && (n >= 60 || !parts.length)) parts.push([from, sents[sents.length - 1].end]);
+    const step = Math.max(1, parts.length / 60);
+    const logits = [];
+    const reasons = new Map();
+    let words = 0;
+    for (let i = 0; i < parts.length; i += step) {
+      const [a, b] = parts[Math.floor(i)];
+      const r = S.assess(text.slice(a, b), findings.filter((f) => f.start >= a && f.end <= b));
+      if (!r) continue;
+      logits.push(r.logit);
+      words += r.words;
+      r.reasons.forEach((k, j) => reasons.set(k, (reasons.get(k) || 0) + (8 - j)));
+    }
+    if (!logits.length) return null;
+    const logit = logits.reduce((x, y) => x + y, 0) / logits.length;
+    return { p: 1 / (1 + Math.exp(-logit)), logit, words, reasons: [...reasons].sort((x, y) => y[1] - x[1]).slice(0, 8).map(([k]) => k), parts: logits.length };
+  }
+
   function score(findings, text, neural) {
     const signals = new Set();
     for (const f of findings) {
@@ -853,7 +889,7 @@
     const scaled = words > 600 ? (count * 600) / words : count;
     let level = scaled >= 5 ? 4 : scaled >= 3 ? 3 : scaled >= 2 ? 2 : scaled >= 1 ? 1 : 0;
     const S = root.SlopgaugeStyle;
-    const style = S && root.SlopgaugeModel ? S.assess(text, findings) : null;
+    const style = S && root.SlopgaugeModel ? (words > LONG_TEXT ? assessLong(S, text, findings) : S.assess(text, findings)) : null;
     const toLevel = (x, t) => (x >= t[3] ? 4 : x >= t[2] ? 3 : x >= t[1] ? 2 : x >= t[0] ? 1 : 0);
     if (style) level = toLevel(style.logit, root.SlopgaugeModel.levels);
     const B = root.SlopgaugeNeuralConfig && root.SlopgaugeNeuralConfig.blend;
