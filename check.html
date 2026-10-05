@@ -6,16 +6,16 @@
   <title>Essay checker | Slopgauge</title>
   <meta name="description" content="A free AI writing checker. Paste an essay to see which sentences read as AI-written, how much of it does, and why. Runs in your browser; nothing is uploaded.">
   <meta property="og:title" content="Slopgauge essay checker: which parts read as AI-written">
-  <meta property="og:description" content="Free. Sentence-by-sentence marks, the share of AI-like text, and the patterns behind it. Nothing you paste leaves your browser.">
-  <meta property="og:image" content="https://slopgauge.com/og.png?v=2">
+  <meta property="og:description" content="Free. Sentence-by-sentence marks, the share of AI-like text, and the tells behind it. Nothing you paste leaves your browser.">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=3">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ebebe4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f100d" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.png">
-  <link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261005">
-  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/funnel-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -32,67 +32,57 @@
 
     <main id="main">
       <div class="checker-head">
-        <h1>Which parts read as <em>AI-written?</em></h1>
-        <p class="lede">Paste an essay, an article or a cover letter. Slopgauge marks the sentences that read like chatbot writing, tells you how much of the text does, and shows the patterns behind it. Free, no account, and nothing you paste is uploaded.</p>
+        <h1>Pour in an essay.</h1>
+        <p class="lede">Slopgauge marks the sentences that read like chatbot writing, measures how much of the text does, and names the tells behind it. Free, no account, and nothing you paste is uploaded.</p>
       </div>
 
-      <form class="sheet editor" id="form">
+      <form class="editor" id="form">
         <label for="text" class="visually-hidden">Text to check</label>
-        <textarea id="text" spellcheck="false" placeholder="Paste the text here. A few paragraphs or more gives the clearest result."></textarea>
+        <textarea id="text" spellcheck="false" placeholder="Paste an essay, an article or a cover letter. A few paragraphs or more gives the clearest result."></textarea>
         <div class="toolbar">
-          <div class="left"><span id="count">0 words</span><button type="button" class="linkish" id="sample">Try an example</button><button type="button" class="linkish" id="clear" hidden>Clear</button></div>
-          <div class="right"><span class="privacy-note">Stays in your browser</span><button class="btn small" type="submit" id="go">Check the text</button></div>
+          <div class="left"><span class="label" id="count">0 words</span><button type="button" class="textlink" id="sample">Try an example</button><button type="button" class="textlink" id="clear" hidden>Clear</button></div>
+          <div class="right"><span class="label privacy-note">Stays in your browser</span><button class="btn small" type="submit" id="go">Measure it</button></div>
         </div>
       </form>
 
-      <section id="report" class="sheet result" hidden tabindex="-1" aria-live="polite" aria-label="Report">
-        <div class="grade">
-          <div class="score">
-            <h2 class="h3">Reads as AI-written</h2>
-            <div id="share" class="big"></div>
-            <p class="of" id="shareOf"></p>
-            <div id="verdict"></div>
+      <section id="report" class="result" hidden tabindex="-1" aria-label="Report">
+        <div class="paper">
+          <div class="legend">
+            <div class="keys label">
+              <span><i class="sw ai"></i>Reads as AI</span>
+              <span><i class="sw maybe"></i>Possibly AI</span>
+              <span><i class="sw r"></i>Named tell</span>
+            </div>
+            <span class="label hint">Hover a mark to see why</span>
           </div>
-          <div class="tally">
-            <h3>Tally</h3>
-            <dl>
-              <dt>Words</dt><dd id="fWords"></dd>
-              <dt>Sentences that read as AI</dt><dd id="fAI"></dd>
-              <dt>Possibly AI</dt><dd id="fMaybe"></dd>
-              <dt>Slop patterns</dt><dd id="fPatterns"></dd>
-            </dl>
-          </div>
-          <div class="found">
-            <h3>Patterns found</h3>
-            <ul id="patterns"></ul>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="keys">
-            <span><i class="sw ai"></i>Reads as AI-written</span>
-            <span><i class="sw maybe"></i>Possibly AI-written</span>
-            <span><i class="sw r"></i>Slop pattern</span>
-          </div>
-          <span class="hint">Hover a mark to see why.</span>
-        </div>
-        <div class="paper-grid">
           <div id="marked" class="marked"></div>
-          <div id="margin" class="margin" aria-hidden="true"></div>
-        </div>
-        <div class="result-foot">
-          <p>No detector can prove who wrote a text. About 1 in 100 human-written essays is still called “Likely AI-written”, so treat a report as a reason to talk with the writer, never as proof on its own.</p>
-          <div class="actions">
-            <button class="btn ghost small" type="button" id="edit">Edit the text</button>
-            <button class="btn small" type="button" id="again">Check another</button>
+          <div class="foot">
+            <p>No detector can prove who wrote a text. About 1 in 100 human-written essays is still called “Likely AI-written”, so treat a report as a reason to talk with the writer, never as proof on its own.</p>
+            <div class="actions">
+              <button class="btn ghost small" type="button" id="edit">Edit the text</button>
+              <button class="btn small" type="button" id="again">Measure another</button>
+            </div>
           </div>
         </div>
+        <aside class="side" aria-label="Summary">
+          <canvas class="gauge" id="gauge" role="img" aria-label="The gauge, filled to the share of the text that reads as AI-written"></canvas>
+          <div class="reading"><span class="big" id="share"></span><p id="shareOf"></p></div>
+          <div id="verdict"></div>
+          <dl class="tally">
+            <dt>Words</dt><dd id="fWords"></dd>
+            <dt>Sentences that read as AI</dt><dd id="fAI"></dd>
+            <dt>Possibly AI</dt><dd id="fMaybe"></dd>
+            <dt>Named tells</dt><dd id="fPatterns"></dd>
+          </dl>
+          <div class="found"><span class="label">Tells found</span><ul id="patterns"></ul></div>
+        </aside>
       </section>
 
       <section class="method" aria-labelledby="how-title">
-        <h2 id="how-title">How it <em>reads.</em></h2>
+        <h2 id="how-title">How it measures.</h2>
         <div>
-          <p>Every sentence is scored with its neighbours, about 60 words at a time, by a small model trained on about 120,000 texts by people and by GPT-4o, Claude, Gemini, Llama and others.</p>
-          <p>It reads word choice, word pairs, punctuation and sentence rhythm, together with Slopgauge’s named slop patterns. The verdict scores the whole text in parts of about 220 words.</p>
+          <p>Every sentence is scored with its neighbours, about 60 words at a time, by a small model trained on about 120,000 texts by people and by GPT-4o, Claude, Gemini, Llama and others. It reads word choice, word pairs, punctuation and sentence rhythm, together with Slopgauge’s named tells.</p>
+          <p>The verdict scores the whole text in parts of about 220 words. The gauge shows the share of words in sentences that read as AI-written.</p>
         </div>
         <div>
           <p>Tested on 1,621 essays, stories and news articles it had never seen, including essays by English learners, it called 1% of the human-written texts “Likely AI-written” and caught 87% of the AI-written ones. In texts that were half human and half AI, it marked 64% of the AI half and 4% of the human half.</p>
@@ -113,11 +103,12 @@
     </div>
   </footer>
 
-  <script src="js/model.js?v=20261005"></script>
-  <script src="js/style.js?v=20261005"></script>
-  <script src="js/detector.js?v=20261005"></script>
-  <script src="js/report.js?v=20261005"></script>
-  <script src="js/sample.js?v=20261005"></script>
-  <script src="js/check.js?v=20261005"></script>
+  <script src="js/model.js?v=3"></script>
+  <script src="js/style.js?v=3"></script>
+  <script src="js/detector.js?v=3"></script>
+  <script src="js/report.js?v=3"></script>
+  <script src="js/sample.js?v=3"></script>
+  <script src="js/gauge.js?v=3"></script>
+  <script src="js/check.js?v=3"></script>
 </body>
 </html>

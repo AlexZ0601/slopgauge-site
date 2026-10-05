@@ -1,13 +1,18 @@
-// The essay checker page: runs js/report.js on the pasted text and draws the result as a marked-up
-// paper. Everything happens in this tab; the text is never sent anywhere.
+// The essay checker page: runs js/report.js on the pasted text, marks it, and pours its tells into
+// the gauge (js/gauge.js), filled to the share of the text that reads as AI-written. Everything
+// happens in this tab; the text is never sent anywhere.
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
   const R = window.SlopgaugeReport;
+  const { Gauge, lettersOf } = window.SlopgaugeGauge;
   const VERDICTS = { human: ['p0', 0, 'Likely human-written'], mixed: ['p2', 2, 'Possibly AI-written'], ai: ['p4', 4, 'Likely AI-written'] };
-  const RING = 'M70 12C128 1 238 2 279 25c28 17 14 52-52 64-62 11-160 9-200-9C-4 66 2 34 46 18 88 4 150 3 205 9';
-  const SVG = 'http://www.w3.org/2000/svg';
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gauge = new Gauge($('gauge'), {
+    ticks: [0, 0.25, 0.5, 0.75, 1].map((at) => ({ at, text: `${at * 100}%` })),
+    minor: 0.05,
+    print: ['SLOPGAUGE', '% AI-LIKE'],
+  });
 
   function h(tag, attrs, ...kids) {
     const el = document.createElement(tag);
@@ -25,27 +30,12 @@
     return h('span', { class: `pill ${cls}` }, bars, text);
   }
 
-  // The number, circled in red pen when there's something to see.
-  function ringed(text) {
-    const svg = document.createElementNS(SVG, 'svg');
-    svg.setAttribute('viewBox', '0 0 300 100');
-    svg.setAttribute('preserveAspectRatio', 'none');
-    svg.setAttribute('aria-hidden', 'true');
-    const path = document.createElementNS(SVG, 'path');
-    path.setAttribute('pathLength', '1');
-    path.setAttribute('d', RING);
-    svg.append(path);
-    const el = h('span', { class: 'ring draw', style: '--delay: 0.15s' }, text);
-    el.append(svg);
-    return el;
-  }
-
   const pct = (x) => `${Math.round(x * 100)}%`;
   const sigmoid = (z) => 1 / (1 + Math.exp(-z));
   const plural = (n, one, many) => `${n.toLocaleString()} ${n === 1 ? one : many}`;
 
-  // The text, cut at sentence and pattern boundaries. Each piece is styled by its sentence's label
-  // and by the slop patterns covering it; `marks` keeps each pattern's pieces for the notes and list.
+  // The text, cut at sentence and tell boundaries. Each piece is styled by its sentence's label and
+  // by the tells covering it; `marks` keeps each tell's pieces for the list and the gauge.
   function marked(text, report) {
     const slop = report.findings.filter((f) => f.severity === 'slop').sort((a, b) => a.start - b.start || b.end - a.end);
     const marks = slop.map((f) => ({ f, els: [] }));
@@ -78,13 +68,13 @@
   };
 
   function show(marks) {
-    const first = marks[0].els[0];
-    first.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'center' });
-    for (const m of marks) for (const el of m.els) {
-      el.classList.remove('flash');
-      void el.offsetWidth; // restart the animation
-      el.classList.add('flash');
-    }
+    marks[0].els[0].scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'center' });
+    for (const m of marks)
+      for (const el of m.els) {
+        el.classList.remove('flash');
+        void el.offsetWidth; // restart the animation
+        el.classList.add('flash');
+      }
   }
 
   function byLabel(marks) {
@@ -96,9 +86,9 @@
     return [...groups].sort((a, b) => b[1].length - a[1].length);
   }
 
-  // "Patterns found": one row per pattern; hover lights its marks, click scrolls to them.
-  function patternList(marks) {
-    if (!marks.length) return [h('li', { class: 'none' }, 'None of the named patterns.')];
+  // "Tells found": one row per kind; hover lights its marks, click scrolls to them.
+  function tellList(marks) {
+    if (!marks.length) return [h('li', { class: 'none' }, 'None of the named tells.')];
     return byLabel(marks).map(([label, ms]) => {
       const btn = h('button', { type: 'button', title: ms[0].f.why }, h('span', null, label), h('span', null, `×${ms.length}`));
       btn.addEventListener('pointerenter', () => light(ms, true));
@@ -110,93 +100,47 @@
     });
   }
 
-  // Margin notes next to the line each pattern starts on. Patterns on the same line share a note; a
-  // note that would land too far below its line is folded into the one above it.
-  let current = [];
-  function placeNotes() {
-    const margin = $('margin');
-    margin.replaceChildren();
-    if (!current.length || getComputedStyle(margin).display === 'none') return;
-    const base = margin.getBoundingClientRect().top;
-    const line = parseFloat(getComputedStyle($('marked')).lineHeight) || 36;
-    const groups = [];
-    for (const m of current) {
-      const top = m.els[0].getBoundingClientRect().top - base;
-      const g = groups[groups.length - 1];
-      if (g && top - g.top < line * 0.8) g.marks.push(m);
-      else groups.push({ top, marks: [m] });
-    }
-    let floor = 0;
-    let last = null;
-    for (const g of groups) {
-      if (last && floor - g.top > line * 2) {
-        last.marks.push(...g.marks);
-        fill(last);
-        floor = last.at + last.el.offsetHeight + 10;
-        continue;
-      }
-      const el = h('div', { class: 'note' });
-      const note = { el, marks: [...g.marks], at: Math.max(g.top - 1, floor) };
-      el.addEventListener('pointerenter', () => {
-        el.classList.add('on');
-        light(note.marks, true);
-      });
-      el.addEventListener('pointerleave', () => {
-        el.classList.remove('on');
-        light(note.marks, false);
-      });
-      margin.append(el);
-      fill(note);
-      el.style.top = `${note.at}px`;
-      floor = note.at + el.offsetHeight + 10;
-      last = note;
-    }
-  }
-  function fill(note) {
-    const groups = byLabel(note.marks);
-    note.el.replaceChildren(...groups.map(([label, ms]) => h('span', null, ms.length > 1 ? `${label} ×${ms.length}` : label)));
-    note.el.title = groups.map(([label, ms]) => `${label}: ${ms[0].f.why}`).join('\n');
-  }
-  let pending = 0;
-  const replace = () => {
-    cancelAnimationFrame(pending);
-    pending = requestAnimationFrame(placeNotes);
-  };
-  new ResizeObserver(replace).observe($('marked'));
-  if (document.fonts) document.fonts.ready.then(replace);
-
   function run() {
     const text = $('text').value;
     const report = R.analyze(text);
     const { nodes, marks } = marked(text, report);
-    current = marks;
     $('marked').replaceChildren(...nodes);
 
-    const share = report.tooShort ? '–' : pct(report.aiShare);
-    const loud = !report.tooShort && report.verdict !== 'human' && report.aiShare > 0;
-    $('share').className = `big${loud ? '' : ' calm'}`;
-    $('share').replaceChildren(loud ? ringed(share) : share);
-    $('shareOf').textContent = report.tooShort ? 'Too short to judge. Paste a paragraph or more: results firm up past about 150 words.' : `of the text, by words, is in sentences that read as AI-written.`;
+    $('share').textContent = report.tooShort ? '–' : pct(report.aiShare);
+    $('shareOf').textContent = report.tooShort ? 'Too short to measure. Paste a paragraph or more: results firm up past about 150 words.' : 'of the text reads as AI-written';
     $('verdict').replaceChildren(report.tooShort ? h('span', { class: 'pill p0' }, 'Too short to judge') : pill(report.verdict));
     const n = (label) => report.sentences.filter((s) => s.label === label).length;
     $('fWords').textContent = report.words.toLocaleString();
     $('fAI').textContent = `${n('ai')} of ${report.sentences.length}`;
     $('fMaybe').textContent = String(n('maybe'));
     $('fPatterns').textContent = String(marks.length);
-    $('patterns').replaceChildren(...patternList(marks));
+    $('patterns').replaceChildren(...tellList(marks));
 
     $('form').hidden = true;
     const box = $('report');
     box.hidden = false;
-    placeNotes();
     box.scrollIntoView({ behavior: 'auto', block: 'start' });
     box.focus({ preventScroll: true });
+    // Pour the tells in: copies of their letters fly to the gauge, which fills to the AI-like share.
+    gauge.set(0);
+    gauge.shown = 0;
+    const seen = new Set();
+    const items = [];
+    let k = 0;
+    for (const m of marks) {
+      const el = m.els[0];
+      if (seen.has(el) || m.f.end - m.f.start > 70) continue;
+      seen.add(el);
+      const r = el.getBoundingClientRect();
+      if (r.top > innerHeight * 1.5) continue;
+      items.push(...lettersOf(el, { delay: 0.25 + k++ * 0.16, gap: 0.014 }));
+    }
+    requestAnimationFrame(() => gauge.pour(items, report.tooShort ? 0 : report.aiShare));
   }
 
   function edit(clear) {
     $('report').hidden = true;
     $('form').hidden = false;
-    current = [];
     if (clear) $('text').value = '';
     update();
     $('form').scrollIntoView({ behavior: 'auto', block: 'center' });
@@ -228,8 +172,8 @@
     else $('text').focus();
   });
 
-  // From the extension's "Full report" button or the home page's paste box: the text arrives after
-  // the # (which browsers never send to the server). Read it, then take it out of the address bar.
+  // From the extension's "Full report" button or the home page: the text arrives after the # (which
+  // browsers never send to the server). Read it, then take it out of the address bar.
   const m = /^#text=(.*)$/s.exec(location.hash);
   if (m) {
     try {
@@ -237,6 +181,9 @@
     } catch (_) {}
     history.replaceState(null, '', location.pathname);
     update();
-    if ($('text').value.trim()) run();
+    if ($('text').value.trim()) {
+      if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(run);
+      else run();
+    }
   }
 })();

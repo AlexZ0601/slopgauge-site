@@ -1,39 +1,43 @@
 # Slopgauge site design
 
-An editor's red pen. The site looks like paper on a desk, and Slopgauge is the editor who marks it up:
-wavy red underlines under the tells, notes in the margin, a grade circled at the top.
+A lab for measuring slop. The site's one object is the gauge: a graduated measuring cylinder. When
+the detector finds a tell, its letters fly out of the text and drop into the cylinder, and the
+liquid rises to the measured level. Everything else on the page is lab equipment around it: slips,
+labels, specimen paragraphs, tally sheets.
+
+## The gauge (`js/gauge.js`)
+- Canvas, no dependencies. A spring-row liquid surface with a meniscus, splashes where letters land,
+  a few bubbles, graduations on the glass and a red pointer at the level.
+- Letters fly on one fixed canvas over the page, on a lob that peaks just above the higher of the
+  two ends, then fall inside the glass to the surface.
+- Home: five bands, one per meter level (No slop to Pure slop), set from the style model's logit and
+  the meter thresholds in `js/model.js`. Checker: 0 to 100%, the share of AI-like text.
+- Drained tells stay in the text, faded, with their red underline. The checker never fades text:
+  it pours copies.
+- Reduced motion: no flying letters; the level is set.
 
 ## Type
-- Fraunces (variable, SIL OFL) for headlines, page text and figures. Headlines 540, with an italic
-  phrase in red. Running text sets `"WONK" 0` so letters stand straight; big figures pin `opsz` 56.
-- Libre Franklin (SIL OFL) for interface text: nav, buttons, labels, tables. Margin notes are its
-  650 weight in small red capitals.
-- Both are self-hosted in `fonts/`. Tabular figures everywhere.
+- Funnel Display (OFL) for headlines, 700, tight tracking. Its "b" has an open notch at large sizes,
+  so long lists of names are set in Funnel Sans instead.
+- Funnel Sans (OFL) for text and interface.
+- Martian Mono (OFL), narrowed to 87.5%, for labels, glass printing and data: small caps-like
+  uppercase with a little tracking.
 
 ## Color
-- Desk `#f3efe7`, sheet `#fffdf8`, ink `#1b1915`, secondary `#5f594f`, faint `#8a8377`, rules `#e4dccd`.
-- One accent: red pen `#c9222c`, used only for marks, notes, figures that matter and italic headline
-  phrases. Amber marks "possibly AI-written" in the checker.
+- Paper `#ebebe4`, cards `#f8f8f3`, ink `#121310`, rules `#cfd1c6`.
+- Slop `#b8c23b` (with a deeper `#8a9425` and a foam `#d4dc6c`): the liquid, the caught dots, the
+  "reads as AI" wash.
+- Red `#d8301f` for tells (wavy underline), the gauge pointer and the one wrongly flagged dot.
 - Meter pills keep the extension's five levels (gray, amber, orange, red, filled red).
-- Dark mode is a dim desk (`#12110f`) with a dark sheet (`#1c1b18`) and a lighter red (`#ff6a5f`).
+- Dark: paper `#0f100d`, cards `#181a15`; the slop is brighter (`#c5d13f`) and glows.
 
-## Components
-- Sheet: the one surface. 4px corners and a soft shadow; the homepage's specimen and screenshot sit
-  slightly rotated, like paper on a desk.
-- Marks: a wavy red underline (an SVG wave, so it can be drawn on) for named patterns; red and amber
-  washes for sentences that read as AI-written or possibly so.
-- Margin notes: red capitals beside the line, with a red rule on their left.
-- Ring: a hand-drawn red loop around the one thing to look at (the headline's "AI slop", the checker's
-  percentage).
-- Buttons are pills: ink-filled, or outlined ("ghost"). Red is their hover state.
-- Sections are separated by a single hairline rule, with a headline on the left and a lede on the right.
-
-## Motion
-- Home: the ring draws itself, then the specimen's underlines are inked in one by one, each margin note
-  following its mark, and the meter lands last.
-- Checker: the percentage's ring draws itself; hovering a note or a pattern lights its marks, and
-  clicking a pattern scrolls to it.
-- All of it is off under `prefers-reduced-motion`.
+## Layout
+- Cards have a 1px rule and 6px corners, no shadows. Buttons are near-square (3px), ink or outlined;
+  red is their hover.
+- Sections: a mono label, a headline, a lede on the right; then one object that only Slopgauge
+  could show: the bench, a feed scored on the page, a paragraph of slop with numbered tells, dot
+  charts of the test results, a lab slip.
+- Everything the page claims about a text is computed on the page by the extension's own code.
 
 ## Caching
 GitHub Pages caches files for 10 minutes. Bump the `?v=` on CSS and JS links when they change.
