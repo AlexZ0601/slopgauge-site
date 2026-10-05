@@ -29,7 +29,7 @@ labels, specimen paragraphs, tally sheets.
   "reads as AI" wash.
 - Red `#d8301f` for tells (wavy underline), the gauge pointer and the one wrongly flagged dot.
 - Meter pills keep the extension's five levels (gray, amber, orange, red, filled red).
-- Dark: paper `#0f100d`, cards `#181a15`; the slop is brighter (`#c5d13f`) and glows.
+- Light only, whatever the device's setting: the gauge reads best on paper.
 
 ## Layout
 - Cards have a 1px rule and 6px corners, no shadows. Buttons are near-square (3px), ink or outlined;
