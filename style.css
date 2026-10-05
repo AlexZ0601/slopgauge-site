@@ -1,4 +1,4 @@
-/* Slopgauge: a lab for measuring slop. See DESIGN.md. */
+/* Slopgauge: a lab for measuring slop. Light only. See DESIGN.md. */
 @font-face { font-family: "Funnel Display"; src: url("fonts/funnel-display-latin.woff2") format("woff2"); font-weight: 300 800; font-display: swap; }
 @font-face { font-family: "Funnel Sans"; src: url("fonts/funnel-sans-latin.woff2") format("woff2"); font-weight: 300 800; font-display: swap; }
 @font-face { font-family: "Martian Mono"; src: url("fonts/martian-mono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-display: swap; }
@@ -23,25 +23,6 @@
   --mono: "Martian Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --gutter: clamp(16px, 4vw, 40px);
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0f100d;
-    --card: #181a15;
-    --ink: #e9ebe2;
-    --ink-2: #a9aca0;
-    --ink-3: #74776d;
-    --rule: #2b2e27;
-    --slop: #c5d13f;
-    --slop-deep: #7d8822;
-    --slop-foam: #e2ec7c;
-    --slop-wash: rgba(197, 209, 63, 0.2);
-    --red: #ff5a48;
-    --red-wash: rgba(255, 90, 72, 0.15);
-    --amber-wash: rgba(232, 179, 58, 0.16);
-    --sheen: rgba(255, 255, 255, 0.1);
-    color-scheme: dark;
-  }
 }
 
 * { box-sizing: border-box; }
@@ -101,7 +82,6 @@ p { text-wrap: pretty; }
 .p2 { color: #c2410c; background: rgba(234, 88, 12, 0.14); }
 .p3 { color: var(--red); background: var(--red-wash); }
 .p4 { color: #fff; background: var(--red); }
-@media (prefers-color-scheme: dark) { .p1 { color: #e8b33a; } .p2 { color: #f39150; } .p4 { color: #1a0a08; } }
 
 /* ---------- Hero: the bench ---------- */
 .hero { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.38fr); gap: clamp(28px, 4vw, 64px); align-items: start; padding: clamp(24px, 4vw, 56px) 0 clamp(64px, 8vw, 104px); }
