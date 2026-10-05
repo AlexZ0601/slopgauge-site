@@ -12,12 +12,12 @@
   const WINDOW = 60; // words around each sentence
   const CHUNK = 220; // words per chunk for the whole-text score
 
-  // Thresholds on the style model's logit, set on 1,621 held-out long texts (essays, English learners'
-  // essays, stories, news, Reddit; human and AI):
-  // - sentence 'ai' at 1.5: 2% of human words, 64% of AI words; 'maybe' at 0.9: 5% / 75%
-  // - document 'ai' at 1.66: 1% of human texts, 87% of AI texts; 'mixed' at 0.79: 5% / 90%
-  // In texts that were half human, half AI, 4% of the human half and 64% of the AI half was marked.
-  const CAL = root.SlopgaugeReportCalibration || { sentenceAI: 1.5, sentenceMaybe: 0.9, docAI: 1.66, docMixed: 0.79, shareMixed: 0.3 };
+  // Thresholds on the style model's logit, per kind of text (js/odds.js, set by
+  // scripts/odds/calibrate.js on held-out texts of that kind): "Likely AI-written" for at most 1 in
+  // 100 human texts, "Possibly" 5 in 100; sentences marked for at most 2 in 100 human words. These
+  // defaults (all kinds pooled) apply when no kind is given.
+  const DEFAULT = { sentenceAI: 1.828, sentenceMaybe: 1.177, docAI: 2.612, docMixed: 1.429, shareMixed: 0.3 };
+  const calFor = (kind) => (root.SlopgaugeOdds && kind ? root.SlopgaugeOdds.calibration(kind) : DEFAULT);
 
   const words = (s) => (s.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) || []).length;
 
@@ -42,7 +42,8 @@
    *   findings, level }
    * label is 'ai', 'maybe' or 'human'; aiShare is the share of words in 'ai' sentences.
    */
-  function analyze(text) {
+  function analyze(text, kind) {
+    const CAL = calFor(kind);
     const sents = D.sentences(text).filter((s) => s.words > 0);
     const total = sents.reduce((n, s) => n + s.words, 0);
     const out = sents.map((s, i) => {

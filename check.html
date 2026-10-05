@@ -7,7 +7,7 @@
   <meta name="description" content="A free AI writing checker. Paste an essay to see which sentences read as AI-written, how much of it does, and why. Runs in your browser; nothing is uploaded.">
   <meta property="og:title" content="Slopgauge essay checker: which parts read as AI-written">
   <meta property="og:description" content="Free. Sentence-by-sentence marks, the share of AI-like text, and the tells behind it. Nothing you paste leaves your browser.">
-  <meta property="og:image" content="https://slopgauge.com/og.png?v=3">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=4">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#ebebe4">
   <meta name="color-scheme" content="light">
@@ -25,6 +25,7 @@
       <nav aria-label="Site">
         <a href="./">Extension</a>
         <a href="check.html" aria-current="page">Essay checker</a>
+        <a href="class.html">Check a class</a>
         <a href="privacy.html">Privacy</a>
         <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
       </nav>
@@ -33,14 +34,21 @@
     <main id="main">
       <div class="checker-head">
         <h1>Pour in an essay.</h1>
-        <p class="lede">Slopgauge marks the sentences that read like chatbot writing, measures how much of the text does, and names the tells behind it. Free, no account, and nothing you paste is uploaded.</p>
+        <p class="lede">Slopgauge marks the sentences that read like chatbot writing, measures how much of the text does, and names the tells behind it. Free, no account, and nothing you paste is uploaded. A whole assignment? <a href="class.html">Check a class at once</a>.</p>
       </div>
 
       <form class="editor" id="form">
         <label for="text" class="visually-hidden">Text to check</label>
-        <textarea id="text" spellcheck="false" placeholder="Paste an essay, an article or a cover letter. A few paragraphs or more gives the clearest result."></textarea>
+        <textarea id="text" spellcheck="false" placeholder="Paste an essay, an article or a cover letter, or drop a Word, PDF or text file here. A few paragraphs or more gives the clearest result."></textarea>
+        <details class="known" id="knownBox">
+          <summary><b>Compare with their own writing</b> <span class="label">Optional · a neural style model, in your browser</span></summary>
+          <p class="hint">Paste one or more things you know this person wrote: an in-class essay, an older assignment, an email. Slopgauge checks whether the text above sounds like the same writer, part by part. More of their writing gives a clearer answer; 300 words or more is best.</p>
+          <label for="known" class="visually-hidden">Writing you know is theirs</label>
+          <textarea id="known" spellcheck="false" placeholder="Paste writing you know is theirs. Separate several pieces with a blank line and three dashes: ---"></textarea>
+          <p class="label" id="knownCount">0 words of their writing</p>
+        </details>
         <div class="toolbar">
-          <div class="left"><span class="label" id="count">0 words</span><button type="button" class="textlink" id="sample">Try an example</button><button type="button" class="textlink" id="clear" hidden>Clear</button></div>
+          <div class="left"><label class="label kind">Kind of text <select id="kind"></select></label><span class="label" id="count">0 words</span><label class="textlink file">Open a file<input type="file" id="file" accept=".txt,.md,.docx,.pdf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label><button type="button" class="textlink" id="sample">Try an example</button><button type="button" class="textlink" id="clear" hidden>Clear</button></div>
           <div class="right"><span class="label privacy-note">Stays in your browser</span><button class="btn small" type="submit" id="go">Measure it</button></div>
         </div>
       </form>
@@ -52,12 +60,13 @@
               <span><i class="sw ai"></i>Reads as AI</span>
               <span><i class="sw maybe"></i>Possibly AI</span>
               <span><i class="sw r"></i>Named tell</span>
+              <span id="voiceKey" hidden><i class="sw v"></i>Unlike their writing</span>
             </div>
             <span class="label hint">Hover a mark to see why</span>
           </div>
           <div id="marked" class="marked"></div>
           <div class="foot">
-            <p>No detector can prove who wrote a text. About 1 in 100 human-written essays is still called “Likely AI-written”, so treat a report as a reason to talk with the writer, never as proof on its own.</p>
+            <p>No detector can prove who wrote a text. About 1 in 100 essays by people is still called “Likely AI-written”, so treat a report as a reason to talk with the writer, never as proof on its own.</p>
             <div class="actions">
               <button class="btn ghost small" type="button" id="edit">Edit the text</button>
               <button class="btn small" type="button" id="again">Measure another</button>
@@ -68,6 +77,8 @@
           <canvas class="gauge" id="gauge" role="img" aria-label="The gauge, filled to the share of the text that reads as AI-written"></canvas>
           <div class="reading"><span class="big" id="share"></span><p id="shareOf"></p></div>
           <div id="verdict"></div>
+          <div class="odds" id="odds"></div>
+          <div class="voice" id="voice" hidden></div>
           <dl class="tally">
             <dt>Words</dt><dd id="fWords"></dd>
             <dt>Sentences that read as AI</dt><dd id="fAI"></dd>
@@ -82,11 +93,11 @@
         <h2 id="how-title">How it measures.</h2>
         <div>
           <p>Every sentence is scored with its neighbours, about 60 words at a time, by a small model trained on about 120,000 texts by people and by GPT-4o, Claude, Gemini, Llama and others. It reads word choice, word pairs, punctuation and sentence rhythm, together with Slopgauge’s named tells.</p>
-          <p>The verdict scores the whole text in parts of about 220 words. The gauge shows the share of words in sentences that read as AI-written.</p>
+          <p>The verdict scores the whole text in parts of about 220 words. The gauge shows the share of words in sentences that read as AI-written. With their own writing pasted in, a neural style model (LUAR) also checks whether each part sounds like them.</p>
         </div>
         <div>
-          <p>Tested on 1,621 essays, stories and news articles it had never seen, including essays by English learners, it called 1% of the human-written texts “Likely AI-written” and caught 87% of the AI-written ones. In texts that were half human and half AI, it marked 64% of the AI half and 4% of the human half.</p>
-          <p>Short texts are harder: under a few hundred words, results are less reliable. <a href="https://github.com/AlexZ0601/slopgauge/tree/main/scripts/model">How the model was built</a>.</p>
+          <p>Tested on 2,999 school essays by students in grades 6 to 12, it called 1 in 100 “Likely AI-written” and caught 72 of 100 essays written by AI on the same prompts. In essays that were half the student’s and half AI, it marked 44% of the AI half and 2% of the student’s half.</p>
+          <p>How often people’s writing scores high depends on the kind of text, so the thresholds are set separately for school essays, college essays, stories, news and online posts. Pick the kind above the Check button. Short texts are harder: under a few hundred words, results are less reliable. <a href="https://github.com/AlexZ0601/slopgauge/tree/main/scripts/model">How the model was built</a>.</p>
         </div>
       </section>
     </main>
@@ -103,12 +114,14 @@
     </div>
   </footer>
 
-  <script src="js/model.js?v=3"></script>
-  <script src="js/style.js?v=3"></script>
-  <script src="js/detector.js?v=3"></script>
-  <script src="js/report.js?v=3"></script>
-  <script src="js/sample.js?v=3"></script>
-  <script src="js/gauge.js?v=3"></script>
-  <script src="js/check.js?v=3"></script>
+  <script src="js/model.js?v=4"></script>
+  <script src="js/style.js?v=4"></script>
+  <script src="js/detector.js?v=4"></script>
+  <script src="js/report.js?v=4"></script>
+  <script src="js/sample.js?v=4"></script>
+  <script src="js/odds.js?v=4"></script>
+  <script src="js/voice-cal.js?v=4"></script>
+  <script src="js/gauge.js?v=4"></script>
+  <script src="js/check.js?v=4"></script>
 </body>
 </html>

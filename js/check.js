@@ -52,11 +52,12 @@
       const covering = marks.filter((m) => a >= m.f.start && b <= m.f.end);
       const sentenceCls = s && s.label !== 'human' ? `s-${s.label}` : '';
       if (!sentenceCls && !covering.length) {
-        nodes.push(piece);
+        nodes.push(s ? h('span', { 'data-s': String(s.start) }, piece) : piece);
         continue;
       }
       const tip = [s && s.logit !== null && s.label !== 'human' ? `AI-likeness of this passage: ${pct(sigmoid(s.logit))}` : '', ...covering.map((m) => `${m.f.label}: ${m.f.why}`)].filter(Boolean).join('\n');
       const el = h('span', { class: [sentenceCls, covering.length ? 'r' : ''].filter(Boolean).join(' '), title: tip }, piece);
+      if (s) el.dataset.s = String(s.start);
       for (const m of covering) m.els.push(el);
       nodes.push(el);
     }
@@ -100,9 +101,123 @@
     });
   }
 
+  // ---------- How unusual is this score, for this kind of text ----------
+  const O = window.SlopgaugeOdds;
+  const KIND_KEY = 'slopgauge.kind';
+  $('kind').replaceChildren(...O.kinds.map(([k, label]) => h('option', { value: k }, k === 'all' ? 'Something else' : label)));
+  try {
+    $('kind').value = localStorage.getItem(KIND_KEY) || 'school';
+  } catch (_) {
+    $('kind').value = 'school';
+  }
+  $('kind').addEventListener('change', () => {
+    try {
+      localStorage.setItem(KIND_KEY, $('kind').value);
+    } catch (_) {}
+  });
+  const inN = (share) => {
+    if (share <= 0) return 'none';
+    if (share >= 0.995) return 'all';
+    if (share >= 0.1) return `${Math.round(share * 100)} in 100`;
+    return `about 1 in ${Math.round(1 / share)}`;
+  };
+  function renderOdds(report) {
+    const box = $('odds');
+    if (report.tooShort || report.docLogit === null) return box.replaceChildren();
+    const o = O.odds($('kind').value, report.docLogit);
+    const kids = [h('span', { class: 'label' }, 'How unusual is this score?')];
+    const human = o.human;
+    if (human) {
+      const n = Math.round(human.share * human.n);
+      kids.push(
+        h('p', null, h('b', null, `${o.label} by people: `), human.share <= 0 ? `none of the ${human.n.toLocaleString()} we tested scored this high.` : `${inN(human.share)} scored this high or higher (${n.toLocaleString()} of ${human.n.toLocaleString()} tested).`)
+      );
+    }
+    if (o.ai) kids.push(h('p', null, h('b', null, `${o.label} by AI: `), `${inN(o.ai.share)} scored this high or higher.`));
+    if (human && human.n < 150) kids.push(h('p', null, `Only ${human.n} texts of this kind were tested, so treat this as rough.`));
+    box.replaceChildren(...kids);
+  }
+
+  // ---------- Does it sound like them (optional) ----------
+  const knownText = () => $('known').value.trim();
+  const knownPieces = () => knownText().split(/\n\s*-{3,}\s*\n/).map((x) => x.trim()).filter(Boolean);
+  $('known').addEventListener('input', () => {
+    const n = R.words(knownText());
+    $('knownCount').textContent = `${n.toLocaleString()} word${n === 1 ? '' : 's'} of their writing${n && n < 150 ? ' · add more if you can: 300 or more is best' : ''}`;
+  });
+  let voiceRun = 0;
+  async function compareVoice(text, report, nodes) {
+    const box = $('voice');
+    const id = ++voiceRun;
+    const known = knownPieces();
+    for (const el of $('marked').querySelectorAll('.v-off')) el.classList.remove('v-off');
+    $('voiceKey').hidden = true;
+    if (!known.length) {
+      box.hidden = true;
+      return;
+    }
+    box.hidden = false;
+    const status = h('p', null, 'Loading the style model (70 MB, once)…');
+    const bar = h('progress', { max: '1', value: '0' });
+    box.replaceChildren(h('span', { class: 'label' }, 'Does it sound like them?'), status, bar);
+    try {
+      await import('./vendor/voice-runtime.js');
+      const V = window.SlopgaugeVoiceNet;
+      const C = window.SlopgaugeVoiceCal;
+      await V.load((f) => (bar.value = f));
+      if (id !== voiceRun) return;
+      status.textContent = 'Comparing…';
+      bar.removeAttribute('value');
+      const K = await V.embed(known);
+      const whole = V.cosine(K, await V.embed([text]));
+      const p = 1 / (1 + Math.exp(-(C.whole[0] * whole + C.whole[1])));
+      // Part by part: the essay's own paragraphs, short ones merged with the next and long ones cut
+      // into runs of about 120 words, so a part is one stretch of writing.
+      const parts = [];
+      let cur = [];
+      let n = 0;
+      const flush = () => {
+        if (cur.length) parts.push(cur);
+        cur = [];
+        n = 0;
+      };
+      report.sentences.forEach((s, i) => {
+        cur.push(s);
+        n += s.words;
+        const next = report.sentences[i + 1];
+        const paraEnd = !next || /\n\s*\n/.test(text.slice(s.end, next.start));
+        if ((paraEnd && n >= 50) || n >= 160) flush();
+      });
+      if (cur.length) (n >= 50 || !parts.length ? parts.push(cur) : parts[parts.length - 1].push(...cur));
+      let off = 0;
+      for (const part of parts) {
+        if (id !== voiceRun) return;
+        const t = text.slice(part[0].start, part[part.length - 1].end);
+        const sim = V.cosine(K, await V.embed([t]));
+        const pp = 1 / (1 + Math.exp(-(C.window[0] * sim + C.window[1])));
+        if (pp < C.offBelow) {
+          off++;
+          for (const s of part) for (const el of $('marked').querySelectorAll('span')) if (el.dataset.s === String(s.start)) el.classList.add('v-off');
+        }
+      }
+      if (id !== voiceRun) return;
+      const [cls, label] = p >= C.sameAbove ? ['same', 'Sounds like them'] : p < C.diffBelow ? ['diff', 'Doesn’t sound like them'] : ['unsure', 'Hard to tell'];
+      const words = R.words(known.join(' '));
+      box.replaceChildren(
+        h('span', { class: 'label' }, 'Does it sound like them?'),
+        h('span', { class: `verdict ${cls}` }, label),
+        h('p', null, off ? `${off} of ${parts.length} parts read unlike their writing (dashed blue in the text).` : `Every part reads like their writing.`),
+        h('p', null, `Compared with ${words.toLocaleString()} words of their writing by a neural style model (LUAR). In testing, a writer's own text was called “Doesn’t sound like them” ${Math.round(C.rates.ownDiff * 100)} times in 100, and AI-written text ${Math.round(C.rates.aiDiff * 100)} times in 100; parts get the dashed mark that rarely too. A different-sounding essay can have honest reasons: a new topic, a different assignment, help from a tutor.${words < 300 ? ' With under 300 words of their writing it is less sure.' : ''}`)
+      );
+      $('voiceKey').hidden = !off;
+    } catch (e) {
+      if (id === voiceRun) box.replaceChildren(h('span', { class: 'label' }, 'Does it sound like them?'), h('p', null, `The style model couldn't run in this browser (${(e && e.message) || e}).`));
+    }
+  }
+
   function run() {
     const text = $('text').value;
-    const report = R.analyze(text);
+    const report = R.analyze(text, $('kind').value);
     const { nodes, marks } = marked(text, report);
     $('marked').replaceChildren(...nodes);
 
@@ -115,6 +230,7 @@
     $('fMaybe').textContent = String(n('maybe'));
     $('fPatterns').textContent = String(marks.length);
     $('patterns').replaceChildren(...tellList(marks));
+    renderOdds(report);
 
     $('form').hidden = true;
     const box = $('report');
@@ -136,6 +252,7 @@
       items.push(...lettersOf(el, { delay: 0.25 + k++ * 0.16, gap: 0.014 }));
     }
     requestAnimationFrame(() => gauge.pour(items, report.tooShort ? 0 : report.aiShare));
+    compareVoice(text, report);
   }
 
   function edit(clear) {
@@ -158,6 +275,35 @@
   }
 
   $('text').addEventListener('input', update);
+
+  // Files: Word, PDF and plain text, read in the browser.
+  async function openFile(file) {
+    if (!file) return;
+    $('count').textContent = `Reading ${file.name}…`;
+    try {
+      await import('./vendor/files-runtime.js');
+      const { text } = await window.SlopgaugeFiles.readFile(file);
+      $('text').value = text;
+      update();
+      $('text').focus();
+    } catch (e) {
+      $('count').textContent = `Couldn't read ${file.name}: ${(e && e.message) || e}`;
+    }
+  }
+  $('file').addEventListener('change', () => openFile($('file').files[0]));
+  $('form').addEventListener('dragover', (e) => {
+    if ([...e.dataTransfer.types].includes('Files')) {
+      e.preventDefault();
+      $('form').classList.add('drop');
+    }
+  });
+  $('form').addEventListener('dragleave', () => $('form').classList.remove('drop'));
+  $('form').addEventListener('drop', (e) => {
+    if (!e.dataTransfer.files.length) return;
+    e.preventDefault();
+    $('form').classList.remove('drop');
+    openFile(e.dataTransfer.files[0]);
+  });
   $('sample').addEventListener('click', () => {
     $('text').value = window.SlopgaugeSample;
     update();

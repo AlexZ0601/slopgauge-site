@@ -1,0 +1,14 @@
+{
+  "name": "slopgauge-site",
+  "private": true,
+  "description": "slopgauge.com. Static files; npm is only for building js/vendor/ (the voice model's runtime).",
+  "scripts": {
+    "build:voice": "node scripts/voice/build-runtime.mjs"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "4.3.0",
+    "esbuild": "0.28.2",
+    "fflate": "^0.8.2",
+    "pdfjs-dist": "^5.7.284"
+  }
+}
