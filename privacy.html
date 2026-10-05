@@ -5,41 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy | Slopgauge</title>
   <meta name="description" content="Slopgauge runs entirely in your browser. It collects nothing and sends nothing you read to anyone.">
-  <meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.png">
+  <link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261005">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="bar">
-      <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30">Slopgauge</a>
-      <nav aria-label="Site"><a href="./">Home</a></nav>
+      <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
+      <nav aria-label="Site">
+        <a href="./">Extension</a>
+        <a href="check.html">Essay checker</a>
+        <a href="privacy.html" aria-current="page">Privacy</a>
+        <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+      </nav>
     </header>
 
     <main class="doc" id="main">
       <h1>Privacy Policy</h1>
       <p class="meta">Effective October 4, 2026</p>
 
-      <aside class="facts privacy" aria-label="Privacy Facts summary">
-        <h2>Privacy Facts</h2>
-        <p class="size"><span>Serving size</span><span>Everything you read</span></p>
-        <div class="rule-10"></div>
-        <p class="amount">Amount sent to us</p>
-        <p class="total"><span>Your data</span><span>0</span></p>
-        <div class="rule-5"></div>
-        <table>
-          <tr><td><b>Personal data collected</b></td><td>0</td></tr>
-          <tr><td><b>Servers</b></td><td>0</td></tr>
-          <tr><td><b>Analytics and trackers</b></td><td>0</td></tr>
-          <tr><td><b>Accounts</b></td><td>0</td></tr>
-          <tr><td><b>Network requests</b></td><td>1*</td></tr>
-        </table>
-        <div class="rule-10"></div>
-        <p class="note">* Only on Google Docs: the open doc is downloaded as plain text from Google, so it can be read in your browser.</p>
-      </aside>
+      <div class="sheet tldr">
+        <p class="big">0</p>
+        <p><b>Words of what you read sent to us, or to anyone.</b>Slopgauge analyzes text on your device. No account, no analytics, no trackers.</p>
+      </div>
 
       <h2>In short</h2>
       <p>Slopgauge does not collect or share any personal data. It analyzes text inside your browser and sends nothing you read to anyone. It has no servers and no analytics.</p>
@@ -90,9 +83,12 @@
 
   <footer>
     <div class="wrap">
-      <span><b>Distributed by Slopgauge</b></span>
-      <a href="./">Home</a>
-      <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
+      <span><b>Slopgauge</b> · Free, and it runs on your device.</span>
+      <nav aria-label="Footer">
+        <a href="./">Chrome extension</a>
+        <a href="check.html">Essay checker</a>
+        <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
+      </nav>
     </div>
   </footer>
 </body>

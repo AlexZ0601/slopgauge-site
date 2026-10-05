@@ -1,0 +1,4 @@
+// The "Try an example" text: a human paragraph followed by a chatbot one, so the report shows both.
+window.SlopgaugeSample = `I started running in March because my doctor said my blood pressure was creeping up. The first week was awful. I made it maybe four minutes before my calves cramped, and I had to walk home past the bakery, which felt personal. By June I could do three miles if it wasn't too hot, and I'd worked out that going before work was the only way I'd actually do it.
+
+Running is more than just a form of exercise; it's a journey of self-discovery. In today's fast-paced world, it serves as a powerful reminder that consistency is key. Moreover, it fosters resilience, discipline, and a profound sense of accomplishment. Whether you're a seasoned athlete or a complete beginner, embracing this transformative practice can unlock your full potential. Ultimately, the road to better health isn't about speed. It's about showing up, one step at a time.`;

@@ -3,177 +3,201 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Slopgauge: Slop Facts for every post you read</title>
-  <meta name="description" content="A free Chrome extension that puts a slop meter on the posts you read and shows which phrases gave each one away. Runs on your device.">
-  <meta property="og:title" content="Slopgauge: Slop Facts for every post you read">
-  <meta property="og:description" content="A free Chrome extension that puts a slop meter on the posts you read and shows which phrases gave each one away.">
-  <meta property="og:image" content="https://slopgauge.com/og.png">
+  <title>Slopgauge: know when you're reading AI slop</title>
+  <meta name="description" content="A free Chrome extension that marks AI-written posts as you scroll and shows which phrases gave each one away, plus a free essay checker. Runs on your device.">
+  <meta property="og:title" content="Slopgauge: know when you're reading AI slop">
+  <meta property="og:description" content="A free Chrome extension that marks AI-written posts as you scroll and shows which phrases gave each one away, plus a free essay checker.">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=2">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#12110f" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="favicon.png">
+  <link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/libre-franklin-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261005">
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="bar">
-      <a class="brand" href="./"><img src="icon.png" alt="" width="30" height="30">Slopgauge</a>
-      <nav aria-label="Sections"><a href="#look">In your feed</a><a href="check.html">Essay checker</a><a href="#ingredients">Ingredients</a><a href="privacy.html">Privacy</a></nav>
+      <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
+      <nav aria-label="Site">
+        <a href="check.html">Essay checker</a>
+        <a href="#tells">What it marks</a>
+        <a href="privacy.html">Privacy</a>
+        <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+      </nav>
     </header>
 
     <main id="main">
       <section class="hero" aria-labelledby="headline">
-        <div class="pitch">
-          <h1 id="headline">Slop Facts for every post you read.</h1>
-          <p class="lede">Slopgauge is a free Chrome extension that puts a slop meter on the posts in your feed and shows which phrases gave each one away. Hover a line on this label to find it in the post.</p>
-          <a class="cta" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome, it’s free</a>
-          <p class="fine">Free. Runs on your device. No account. Checking a whole essay? <a href="check.html">Use the essay checker</a>.</p>
+        <div>
+          <p class="kicker"><span class="dot" aria-hidden="true"></span>Free for Chrome · Runs on your device</p>
+          <h1 id="headline">Know when you’re reading <span class="ring draw">AI slop<svg viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M70 12C128 1 238 2 279 25c28 17 14 52-52 64-62 11-160 9-200-9C-4 66 2 34 46 18 88 4 150 3 205 9"/></svg></span>.</h1>
+          <p class="lede">Slopgauge marks chatbot-written posts as you scroll LinkedIn, X, Reddit and the rest, and shows you the exact phrases that gave each one away. Got an essay to check? Paste it into the free checker.</p>
+          <div class="actions">
+            <a class="btn" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add to Chrome, it’s free</a>
+            <a class="btn ghost" href="check.html">Check an essay</a>
+          </div>
+          <p class="fine">No account. Nothing you read leaves your browser.</p>
         </div>
 
-        <div class="specimen">
-          <article class="post" aria-label="Example post">
-            <div class="who"><span class="mono" aria-hidden="true">DO</span><div><b>Dana Okafor</b><span>Head of Growth at Hollowpine · 2h</span></div></div>
-            <p><mark data-rule="throat" style="--i:0">I'm thrilled to announce</mark> that I've joined Hollowpine as Head of Growth.</p>
-            <p><mark data-rule="throat" style="--i:0">Here's the thing</mark>: growth <mark data-rule="contrast" style="--i:1">isn't about hacks. It's</mark> about people.</p>
-            <p>After 6 years in B2B SaaS, I've learned to <mark data-rule="vocab" style="--i:2">delve</mark> into what customers actually need. <mark data-rule="colon" style="--i:3">The best part:</mark> it's simple.</p>
-            <p><mark data-rule="fragments" style="--i:5"><mark data-rule="negative" style="--i:4">Not a sprint. Not a marathon.</mark> A lifestyle.</mark></p>
-            <p><mark data-rule="bait" style="--i:6">Agree?</mark></p>
-          </article>
-
-          <aside class="facts" aria-label="Slop Facts for the example post">
-            <h2>Slop Facts</h2>
-            <p class="per">1 serving per post</p>
-            <p class="size"><span>Serving size</span><span>51 words</span></p>
-            <div class="rule-10"></div>
-            <p class="amount">Amount per serving</p>
-            <p class="total"><span>Slop patterns</span><span>8</span></p>
-            <div class="rule-5"></div>
-            <p class="level"><span>Slop level</span><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span></p>
-            <table>
-              <tr data-rule="throat" style="--i:0"><td><b>Throat-clearing opener</b></td><td>2</td></tr>
-              <tr class="sub" data-rule="throat"><td>“I'm thrilled to announce”</td><td></td></tr>
-              <tr class="sub" data-rule="throat"><td>“Here's the thing”</td><td></td></tr>
-              <tr data-rule="contrast" style="--i:1"><td><b>Binary contrast</b></td><td>1</td></tr>
-              <tr data-rule="vocab" style="--i:2"><td><b>AI vocabulary</b></td><td>1</td></tr>
-              <tr class="sub" data-rule="vocab"><td>“delve”</td><td></td></tr>
-              <tr data-rule="colon" style="--i:3"><td><b>Colon reveal</b></td><td>1</td></tr>
-              <tr data-rule="negative" style="--i:4"><td><b>Negative listing</b></td><td>1</td></tr>
-              <tr data-rule="fragments" style="--i:5"><td><b>Dramatic fragments</b></td><td>1</td></tr>
-              <tr data-rule="bait" style="--i:6"><td><b>Engagement bait</b></td><td>1</td></tr>
-            </table>
-            <div class="rule-10"></div>
-            <p class="note">* Slopgauge counts named patterns in the text. It can't tell who, or what, wrote a post.</p>
-          </aside>
-        </div>
+        <figure class="sheet specimen" aria-label="An example post, marked up by Slopgauge">
+          <div class="who"><span class="avatar" aria-hidden="true"></span><div><b>Dana Okafor</b>Head of Growth at Hollowpine · 2h</div></div>
+          <div class="marked-grid">
+            <p><span class="mk" style="--i:0">I’m thrilled to announce</span> that I’ve joined Hollowpine as Head of Growth.</p>
+            <span class="note" style="--i:0">Throat-clearing opener</span>
+            <p><span class="mk" style="--i:1">Here’s the thing:</span> growth <span class="mk" style="--i:2">isn’t about hacks. It’s about people.</span></p>
+            <span class="note" style="--i:2">Binary contrast</span>
+            <p>Six years in B2B SaaS taught me to <span class="mk" style="--i:3">delve</span> into what customers actually need. <span class="mk" style="--i:4">The best part:</span> it’s simple.</p>
+            <span class="note" style="--i:4">Chatbot word,<br>colon reveal</span>
+            <p><span class="mk" style="--i:5">Not a sprint. Not a marathon.</span> A lifestyle.</p>
+            <span class="note" style="--i:5">Negative listing</span>
+            <p><span class="mk" style="--i:6">Agree? Tell me in the comments.</span></p>
+            <span class="note" style="--i:6">Engagement bait</span>
+          </div>
+          <figcaption class="meter"><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span><span>7 slop patterns</span></figcaption>
+        </figure>
       </section>
 
-      <section class="panel" id="look" aria-labelledby="look-title">
-        <h2 class="panel-title" id="look-title">In your feed, it looks like this</h2>
-        <div class="thick"></div>
+      <section class="section" id="try" aria-labelledby="try-title">
+        <div class="section-head">
+          <h2 id="try-title">Paste anything. <em>See what reads as AI.</em></h2>
+          <p class="lede">An essay, a cover letter, a post you’re about to publish. The free checker marks the sentences that read as AI-written, tells you how much of the text does, and shows why. Nothing you paste is uploaded.</p>
+        </div>
+        <form class="sheet paste" id="paste" action="check.html">
+          <label for="pasteText" class="visually-hidden">Text to check</label>
+          <textarea id="pasteText" spellcheck="false" placeholder="Paste a paragraph or more…"></textarea>
+          <div class="toolbar">
+            <div class="left"><span id="pasteCount">0 words</span><button type="button" class="linkish" id="pasteSample">Try an example</button></div>
+            <div class="right"><span class="privacy-note">Stays in your browser</span><button class="btn small" type="submit">Check the text</button></div>
+          </div>
+        </form>
+      </section>
+
+      <section class="section" id="feed" aria-labelledby="feed-title">
         <div class="feed">
-          <figure class="shot">
+          <figure class="sheet shot">
             <img src="hero.png" width="648" height="760" loading="lazy" alt="The extension on a post: a red Pure slop meter under the text, flagged phrases highlighted, and a popover listing each pattern with the reason it reads as generated.">
-            <figcaption>The real extension, running on a demo post.</figcaption>
+            <figcaption>The extension on a demo post.</figcaption>
           </figure>
-          <dl>
-            <dt>A meter under every post</dt>
-            <dd>LinkedIn posts, tweets, Reddit threads, emails and comments each get one as you scroll. There is nothing to click.</dd>
-            <dt>The evidence on hover</dt>
-            <dd>Hover the meter to see each pattern it found, the exact phrase, and why it reads as generated. Flagged phrases are highlighted in the post.</dd>
-            <dt>A quieter feed</dt>
-            <dd>Turn on Dim heavy slop and the worst posts fade out of the way. Hover one to read it anyway.</dd>
-          </dl>
-        </div>
-      </section>
-
-      <section class="panel" id="levels" aria-labelledby="levels-title">
-        <h2 class="panel-title" id="levels-title">Slop level guide</h2>
-        <div class="thick"></div>
-        <div class="guide">
-          <div class="row"><span class="pill p0">No slop</span><p>Reads like writing people do by hand.</p></div>
-          <div class="row"><span class="pill p1"><span class="bars"><i class="on"></i><i></i><i></i><i></i></span>A little slop</span><p>Some chatbot habits. About 1 in 10 human posts lands here too.</p></div>
-          <div class="row"><span class="pill p2"><span class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></span>Some slop</span><p>Clearly templated. About 3 in 100 human posts.</p></div>
-          <div class="row"><span class="pill p3"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>Heavy slop</span><p>Rare in writing people do by hand: about 1 in 100.</p></div>
-          <div class="row"><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span><p>About 3 in 1,000 human posts.</p></div>
-          <div class="thin"></div>
-          <p class="foot">The level comes from a small model trained on about 120,000 posts, tweets, essays and articles by people and by GPT-4o, Claude, Gemini, Llama and others, which weighs word choice and rhythm together with the named patterns. On posts it had never seen, with 5% of human posts flagged, <b>it caught 59% of AI-written social posts and 95% of AI-written Reddit posts, and flagged none of the human tweets or English learners' essays.</b> Turn on Deep check in the popup to add a larger neural model on your computer.</p>
-        </div>
-      </section>
-
-      <section class="panel" id="ingredients" aria-labelledby="ingredients-title">
-        <h2 class="panel-title" id="ingredients-title">Ingredients</h2>
-        <div class="thick"></div>
-        <p class="ingredients"><b>Ingredients:</b> chatbot vocabulary (delve, leverage, a testament to, serves as), binary contrasts (“It's not a tool. It's a teammate.”), throat-clearing openers (“Here's the thing:”), colon reveals (“The best part: it's free.”), self-answered questions (“The result? Growth.”), engagement bait (“Agree?”), chatbot leftovers (“I hope this helps!”, “[Your Name]”), negative listings, fake-profound kickers, weasel attribution, importance puffery, rule-of-three lists, and about fifteen more.</p>
-        <p class="contains"><b>Contains:</b> em dashes, emoji bullets, pasted markdown.</p>
-      </section>
-
-      <section class="panel" id="essays" aria-labelledby="essays-title">
-        <h2 class="panel-title" id="essays-title">Checking a whole essay?</h2>
-        <div class="thick"></div>
-        <div class="storage">
           <div>
-            <p>Paste it into the essay checker for a full report.</p>
-            <p>It marks the sentences that read as AI-written, tells you how much of the text does, and lists the patterns behind it. Free, and it runs in your browser like the extension: nothing you paste is uploaded.</p>
-          </div>
-          <div>
-            <p>Made with teachers in mind, and honest about its limits: about 1 in 100 human-written essays is still called "Likely AI-written", so a report is a reason to talk with the writer, not proof.</p>
-            <p><a class="cta" href="check.html">Open the essay checker</a></p>
+            <h2 id="feed-title">A meter under <em>every post.</em></h2>
+            <ul class="points">
+              <li><b>Nothing to click</b>Posts, tweets, Reddit threads, emails and comments each get a meter as you scroll.</li>
+              <li><b>The evidence on hover</b>Hover a meter to see each pattern it found, the exact phrase, and why it reads as generated.</li>
+              <li><b>Deep check, if you want it</b>Turn it on to add a larger neural detector that runs on your own computer, for a closer read.</li>
+              <li><b>A quieter feed</b>Switch on Dim heavy slop and the worst posts fade out of the way.</li>
+            </ul>
           </div>
         </div>
+        <ol class="scale" aria-label="The five meter levels, and how often human-written posts reach each">
+          <li><span class="pill p0">No slop</span>Reads like writing done by hand</li>
+          <li><span class="pill p1"><span class="bars"><i class="on"></i><i></i><i></i><i></i></span>A little slop</span>1 in 10 human posts land here too</li>
+          <li><span class="pill p2"><span class="bars"><i class="on"></i><i class="on"></i><i></i><i></i></span>Some slop</span>3 in 100 human posts</li>
+          <li><span class="pill p3"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span>Heavy slop</span>1 in 100 human posts</li>
+          <li><span class="pill p4"><span class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span>Pure slop</span>3 in 1,000 human posts</li>
+        </ol>
       </section>
 
-      <section class="panel" id="where" aria-labelledby="where-title">
-        <h2 class="panel-title" id="where-title">Works on</h2>
-        <div class="thick"></div>
+      <section class="section" id="tells" aria-labelledby="tells-title">
+        <div class="section-head">
+          <h2 id="tells-title">The tells, <em>by name.</em></h2>
+          <p class="lede">A score alone doesn’t help. Slopgauge points at the habits that make chatbot writing sound like chatbot writing, about thirty of them, and a model trained on 120,000 texts weighs them with word choice and rhythm.</p>
+        </div>
+        <dl class="lexicon">
+          <div class="entry"><dt>Binary contrast <i>n.</i></dt><dd class="ex">“<span class="mk">It’s not a tool. It’s a teammate.</span>”</dd><dd>Knocking down a claim nobody made, to sound decisive.</dd></div>
+          <div class="entry"><dt>Throat-clearing <i>n.</i></dt><dd class="ex">“<span class="mk">Here’s the thing:</span> most meetings should be emails.”</dd><dd>Announcing a point instead of making it.</dd></div>
+          <div class="entry"><dt>Colon reveal <i>n.</i></dt><dd class="ex">“<span class="mk">The best part:</span> it’s free.”</dd><dd>A drumroll before an ordinary fact.</dd></div>
+          <div class="entry"><dt>Chatbot words <i>pl. n.</i></dt><dd class="ex">“Let’s <span class="mk">delve</span> into this <span class="mk">rich tapestry</span>.”</dd><dd>Words people rarely reach for: delve, tapestry, leverage, a testament to.</dd></div>
+          <div class="entry"><dt>Engagement bait <i>n.</i></dt><dd class="ex">“<span class="mk">Agree? Drop a comment below.</span>”</dd><dd>A last line written for the algorithm, not the reader.</dd></div>
+          <div class="entry"><dt>Leftovers <i>pl. n.</i></dt><dd class="ex">“<span class="mk">Certainly! Here’s a post</span> about my promotion:”</dd><dd>Text pasted straight out of the chat window.</dd></div>
+        </dl>
+        <p class="more">Plus negative listings, fake-profound kickers, rule-of-three lists, em dash pileups, emoji and arrow bullets, weasel attribution and more.</p>
+      </section>
+
+      <section class="section" id="accuracy" aria-labelledby="acc-title">
+        <div class="section-head">
+          <h2 id="acc-title">Honest about <em>what it can’t know.</em></h2>
+          <p class="lede">No detector can prove who wrote a text. Here is how the essay checker did on 1,621 essays, stories and news articles it had never seen.</p>
+        </div>
+        <div class="figures">
+          <div class="figure"><div class="num red">87<small>%</small></div><p>of AI-written texts were called <b>Likely AI-written</b>.</p></div>
+          <div class="figure"><div class="num">1<small> in 100</small></div><p>human-written texts were wrongly called Likely AI-written, essays by English learners included.</p></div>
+          <div class="figure"><div class="num">64<small>%</small></div><p>of the AI part was marked in texts written half by people and half by AI. Of the human part, <b>4%</b> was.</p></div>
+        </div>
+        <p class="caveat"><b>Treat a red mark as a reason to look closer, never as proof on its own.</b> Short texts are the hardest: under a few hundred words, results are less reliable.</p>
+      </section>
+
+      <section class="section" id="where" aria-labelledby="where-title">
+        <div class="section-head">
+          <h2 id="where-title">Works where <em>you read.</em></h2>
+        </div>
         <ul class="sites">
-          <li>LinkedIn</li><li>X</li><li>Reddit</li><li>Facebook</li><li>Bluesky</li><li>YouTube comments</li><li>Gmail</li><li>Hacker News</li><li>GitHub</li><li>Mastodon and forums</li><li>Google Docs</li><li>Articles on most sites</li>
+          <li>LinkedIn</li><li>X</li><li>Reddit</li><li>Facebook</li><li>Instagram</li><li>Threads</li><li>Bluesky</li><li>TikTok</li><li>YouTube comments</li><li>Quora</li><li>Gmail</li><li>Outlook</li><li>Slack</li><li>Discord</li><li>Hacker News</li><li>GitHub</li><li>Google Docs</li><li>Forums</li><li>Articles on most sites</li>
         </ul>
-        <p class="lead">Anywhere else, select text and right-click “Check with Slopgauge”, or paste it into the toolbar popup.</p>
+        <p class="fine">Anywhere else, select text and right-click “Check with Slopgauge”, or paste it into the toolbar popup.</p>
       </section>
 
-      <section class="panel" id="storage" aria-labelledby="storage-title">
-        <h2 class="panel-title" id="storage-title">Storage and handling</h2>
-        <div class="thick"></div>
-        <div class="storage">
-          <div>
-            <p>Keep on your device. Contains no servers.</p>
-            <p>Slopgauge reads the text in your browser and never sends anything you read to anyone. There is no account and no analytics.</p>
-          </div>
-          <div>
-            <p>On Google Docs, which draws its text on a canvas, it downloads the open doc as plain text from Google, the same as File &gt; Download. That is the only network request it makes.</p>
+      <section class="section" id="privacy" aria-labelledby="privacy-title">
+        <div class="privacy-band">
+          <h2 id="privacy-title">Nothing you read <em>leaves your browser.</em></h2>
+          <div class="body">
+            <p>Slopgauge reads text on your device and sends it nowhere. No servers, no account, no analytics.</p>
+            <p>The one exception is Google Docs, which draws its text on a canvas: Slopgauge downloads the open doc as plain text from Google, the same as File &gt; Download, and reads it locally.</p>
             <p><a href="privacy.html">Read the privacy policy</a></p>
           </div>
         </div>
       </section>
 
       <section class="close" aria-labelledby="close-title">
-        <h2 id="close-title">Put a slop label on everything you read.</h2>
-        <a class="cta" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome, it’s free</a>
+        <h2 id="close-title">Read less <em>slop.</em></h2>
+        <div class="actions">
+          <a class="btn" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add to Chrome, it’s free</a>
+          <a class="btn ghost" href="check.html">Check an essay</a>
+        </div>
       </section>
     </main>
   </div>
 
   <footer>
     <div class="wrap">
-      <span><b>Distributed by Slopgauge</b></span>
-      <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
-      <a href="privacy.html">Privacy</a>
-      <span>Detection rules adapted from <a href="https://github.com/petergyang/no-ai-slop">no-ai-slop</a> (MIT).</span>
+      <span><b>Slopgauge</b> · Free, and it runs on your device.</span>
+      <nav aria-label="Footer">
+        <a href="check.html">Essay checker</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
+        <span>Rules adapted from <a href="https://github.com/petergyang/no-ai-slop">no-ai-slop</a> (MIT)</span>
+      </nav>
     </div>
   </footer>
 
+  <script src="js/sample.js?v=20261005"></script>
   <script>
-    // Hover a label line to light up its phrases in the post, and the reverse.
-    const specimen = document.querySelector('.specimen');
-    const light = (rule, on) => specimen.querySelectorAll(`[data-rule="${rule}"]`).forEach((el) => el.classList.toggle('on', on));
-    for (const el of specimen.querySelectorAll('[data-rule]')) {
-      el.addEventListener('pointerenter', () => light(el.dataset.rule, true));
-      el.addEventListener('pointerleave', () => light(el.dataset.rule, false));
-    }
+    // The paste box hands its text to the checker after the "#", which browsers never send to a server.
+    (() => {
+      const form = document.getElementById('paste');
+      const box = document.getElementById('pasteText');
+      const count = document.getElementById('pasteCount');
+      const update = () => {
+        const n = (box.value.match(/[\p{L}\p{N}][\p{L}\p{N}'’-]*/gu) || []).length;
+        count.textContent = `${n.toLocaleString()} word${n === 1 ? '' : 's'}`;
+        box.style.height = 'auto';
+        box.style.height = `${box.scrollHeight + 2}px`;
+      };
+      box.addEventListener('input', update);
+      document.getElementById('pasteSample').addEventListener('click', () => {
+        box.value = window.SlopgaugeSample;
+        update();
+      });
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!box.value.trim()) return box.focus();
+        location.href = `check.html#text=${encodeURIComponent(box.value.slice(0, 60000))}`;
+      });
+    })();
   </script>
 </body>
 </html>

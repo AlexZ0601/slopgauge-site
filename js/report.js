@@ -15,7 +15,7 @@
   // Thresholds on the style model's logit, set on 1,621 held-out long texts (essays, English learners'
   // essays, stories, news, Reddit; human and AI):
   // - sentence 'ai' at 1.5: 2% of human words, 64% of AI words; 'maybe' at 0.9: 5% / 75%
-  // - document 'ai' at 1.66: 1% of human texts, 86% of AI texts; 'mixed' at 0.79: 5% / 90%
+  // - document 'ai' at 1.66: 1% of human texts, 87% of AI texts; 'mixed' at 0.79: 5% / 90%
   // In texts that were half human, half AI, 4% of the human half and 64% of the AI half was marked.
   const CAL = root.SlopgaugeReportCalibration || { sentenceAI: 1.5, sentenceMaybe: 0.9, docAI: 1.66, docMixed: 0.79, shareMixed: 0.3 };
 
