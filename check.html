@@ -5,34 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Essay checker | Slopgauge</title>
   <meta name="description" content="A free AI writing checker. Paste an essay to see which sentences read as AI-written, how much of it does, and why. Runs in your browser; nothing is uploaded.">
+  <link rel="canonical" href="https://slopgauge.com/check.html">
   <meta property="og:title" content="Slopgauge essay checker: which parts read as AI-written">
   <meta property="og:description" content="Free. Sentence-by-sentence marks, the share of AI-like text, and the tells behind it. Nothing you paste leaves your browser.">
-  <meta property="og:image" content="https://slopgauge.com/og.png?v=4">
+  <meta property="og:image" content="https://slopgauge.com/og.png?v=5">
+  <meta property="og:url" content="https://slopgauge.com/check.html">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#ebebe4">
+  <meta name="theme-color" content="#ffffff">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="favicon.png">
-  <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/funnel-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="stylesheet" href="style.css?v=5">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <div class="wrap">
-    <header class="bar">
-      <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
-      <nav aria-label="Site">
-        <a href="./">Extension</a>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="./"><img src="icon.png" alt="" width="24" height="24">Slopgauge</a>
+      <nav class="nav-links" aria-label="Site">
         <a href="check.html" aria-current="page">Essay checker</a>
         <a href="class.html">Check a class</a>
+        <a href="./#sure">Accuracy</a>
+        <a href="./#about">About</a>
         <a href="privacy.html">Privacy</a>
-        <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
       </nav>
-    </header>
+      <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menu"><span></span><span></span></button>
+    </div>
+    <div class="menu" id="menu" hidden>
+      <nav class="wrap" aria-label="Menu">
+        <a href="./">Home</a>
+        <a href="check.html" aria-current="page">Essay checker</a>
+        <a href="class.html">Check a class</a>
+        <a href="./#sure">Accuracy</a>
+        <a href="./#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <p class="menu-fine">Free, and it runs on your device.</p>
+      </nav>
+    </div>
+  </header>
 
-    <main id="main">
-      <div class="checker-head">
+  <main id="main">
+    <div class="wrap">
+      <div class="page-head">
+        <span class="eyebrow">Essay checker</span>
         <h1>Pour in an essay.</h1>
         <p class="lede">Slopgauge marks the sentences that read like chatbot writing, measures how much of the text does, and names the tells behind it. Free, no account, and nothing you paste is uploaded. A whole assignment? <a href="class.html">Check a class at once</a>.</p>
       </div>
@@ -42,18 +59,19 @@
         <textarea id="text" spellcheck="false" placeholder="Paste an essay, an article or a cover letter, or drop a Word, PDF or text file here. A few paragraphs or more gives the clearest result."></textarea>
         <details class="known" id="knownBox">
           <summary><b>Compare with their own writing</b> <span class="label">Optional · a neural style model, in your browser</span></summary>
-          <p class="hint">Paste one or more things you know this person wrote: an in-class essay, an older assignment, an email. Slopgauge checks whether the text above sounds like the same writer, part by part. More of their writing gives a clearer answer; 300 words or more is best.</p>
+          <p class="hint-text">Paste one or more things you know this person wrote: an in-class essay, an older assignment, an email. Slopgauge checks whether the text above sounds like the same writer, part by part. More of their writing gives a clearer answer; 300 words or more is best.</p>
           <label for="known" class="visually-hidden">Writing you know is theirs</label>
           <textarea id="known" spellcheck="false" placeholder="Paste writing you know is theirs. Separate several pieces with a blank line and three dashes: ---"></textarea>
           <p class="label" id="knownCount">0 words of their writing</p>
         </details>
         <div class="toolbar">
           <div class="left"><label class="label kind">Kind of text <select id="kind"></select></label><span class="label" id="count">0 words</span><label class="textlink file">Open a file<input type="file" id="file" accept=".txt,.md,.docx,.pdf,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden></label><button type="button" class="textlink" id="sample">Try an example</button><button type="button" class="textlink" id="clear" hidden>Clear</button></div>
-          <div class="right"><span class="label privacy-note">Stays in your browser</span><button class="btn small" type="submit" id="go">Measure it</button></div>
+          <div class="right"><span class="label privacy-note">Stays in your browser</span><span class="kbd" id="shortcut" aria-hidden="true"></span><button class="btn small" type="submit" id="go">Measure it</button></div>
         </div>
       </form>
 
       <section id="report" class="result" hidden tabindex="-1" aria-label="Report">
+        <p class="print-only" id="printHead"></p>
         <div class="paper">
           <div class="legend">
             <div class="keys label">
@@ -62,13 +80,14 @@
               <span><i class="sw r"></i>Named tell</span>
               <span id="voiceKey" hidden><i class="sw v"></i>Unlike their writing</span>
             </div>
-            <span class="label hint">Hover a mark to see why</span>
+            <span class="label hint">Point at a mark to see why</span>
           </div>
           <div id="marked" class="marked"></div>
-          <div class="foot">
+          <div class="foot-note">
             <p>No detector can prove who wrote a text. About 1 in 100 essays by people is still called “Likely AI-written”, so treat a report as a reason to talk with the writer, never as proof on its own.</p>
             <div class="actions">
-              <button class="btn ghost small" type="button" id="edit">Edit the text</button>
+              <button class="btn quiet small" type="button" id="print">Print or save PDF</button>
+              <button class="btn quiet small" type="button" id="edit">Edit the text</button>
               <button class="btn small" type="button" id="again">Measure another</button>
             </div>
           </div>
@@ -88,40 +107,43 @@
           <div class="found"><span class="label">Tells found</span><ul id="patterns"></ul></div>
         </aside>
       </section>
+    </div>
 
-      <section class="method" aria-labelledby="how-title">
-        <h2 id="how-title">How it measures.</h2>
-        <div>
+    <section class="band alt method-band" aria-labelledby="how-title">
+      <div class="wrap method">
+        <h2 id="how-title" class="reveal">How it measures.</h2>
+        <div class="reveal">
           <p>Every sentence is scored with its neighbours, about 60 words at a time, by a small model trained on about 120,000 texts by people and by GPT-4o, Claude, Gemini, Llama and others. It reads word choice, word pairs, punctuation and sentence rhythm, together with Slopgauge’s named tells.</p>
           <p>The verdict scores the whole text in parts of about 220 words. The gauge shows the share of words in sentences that read as AI-written. With their own writing pasted in, a neural style model (LUAR) also checks whether each part sounds like them.</p>
         </div>
-        <div>
+        <div class="reveal d1">
           <p>Tested on 2,999 school essays by students in grades 6 to 12, it called 1 in 100 “Likely AI-written” and caught 72 of 100 essays written by AI on the same prompts. In essays that were half the student’s and half AI, it marked 44% of the AI half and 2% of the student’s half.</p>
-          <p>How often people’s writing scores high depends on the kind of text, so the thresholds are set separately for school essays, college essays, stories, news and online posts. Pick the kind above the Check button. Short texts are harder: under a few hundred words, results are less reliable. <a href="https://github.com/AlexZ0601/slopgauge/tree/main/scripts/model">How the model was built</a>.</p>
+          <p>How often people’s writing scores high depends on the kind of text, so the thresholds are set separately for school essays, college essays, stories, news and online posts. Pick the kind next to the word count. Short texts are harder: under a few hundred words, results are less reliable. <a href="./#about">The research it’s built on</a>.</p>
         </div>
-      </section>
-    </main>
-  </div>
+      </div>
+    </section>
+  </main>
 
-  <footer>
+  <footer class="foot">
     <div class="wrap">
-      <span><b>Slopgauge</b> · Free, and it runs on your device.</span>
-      <nav aria-label="Footer">
-        <a href="./">Chrome extension</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="mailto:support@slopgauge.com">support@slopgauge.com</a>
-      </nav>
+      <div class="cols">
+        <div><h4>Slopgauge</h4><ul><li><a href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Chrome extension</a></li><li><a href="check.html">Essay checker</a></li><li><a href="class.html">Check a class</a></li></ul></div>
+        <div><h4>Learn</h4><ul><li><a href="./#sure">How accurate it is</a></li><li><a href="./#faq">Questions</a></li><li><a href="./#about">About</a></li></ul></div>
+        <div><h4>Policy and contact</h4><ul><li><a href="privacy.html">Privacy policy</a></li><li><a href="mailto:support@slopgauge.com">support@slopgauge.com</a></li></ul></div>
+      </div>
+      <div class="legal"><span>Free, and it runs on your device.</span><span>Named tells adapted from <a href="https://github.com/petergyang/no-ai-slop">no-ai-slop</a> (MIT).</span></div>
     </div>
   </footer>
 
-  <script src="js/model.js?v=4"></script>
-  <script src="js/style.js?v=4"></script>
-  <script src="js/detector.js?v=4"></script>
-  <script src="js/report.js?v=4"></script>
-  <script src="js/sample.js?v=4"></script>
-  <script src="js/odds.js?v=4"></script>
-  <script src="js/voice-cal.js?v=4"></script>
-  <script src="js/gauge.js?v=4"></script>
-  <script src="js/check.js?v=4"></script>
+  <script src="js/site.js?v=5"></script>
+  <script src="js/model.js?v=5"></script>
+  <script src="js/style.js?v=5"></script>
+  <script src="js/detector.js?v=5"></script>
+  <script src="js/report.js?v=5"></script>
+  <script src="js/sample.js?v=5"></script>
+  <script src="js/odds.js?v=5"></script>
+  <script src="js/voice-cal.js?v=5"></script>
+  <script src="js/gauge.js?v=5"></script>
+  <script src="js/check.js?v=5"></script>
 </body>
 </html>

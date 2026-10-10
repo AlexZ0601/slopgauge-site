@@ -1,6 +1,8 @@
 // The slop gauge: a measuring cylinder drawn on a canvas. Its liquid level is the measured score, and
 // the letters of flagged phrases fly out of the text and fall into it (js/home.js, js/check.js).
-// No dependencies; with reduced motion the level is simply set.
+// The level moves on a spring (damping and response, as Apple describes them), so it always starts
+// from where it is on screen and can be grabbed mid-motion (js/levels.js). No dependencies; with
+// reduced motion the level is simply set.
 (function (root) {
   'use strict';
 
@@ -13,13 +15,10 @@
   function palette() {
     const s = getComputedStyle(document.documentElement);
     const v = (n) => s.getPropertyValue(n).trim();
-    return { ink: v('--ink'), ink3: v('--ink-3'), slop: v('--slop'), slopDeep: v('--slop-deep'), foam: v('--slop-foam'), red: v('--red'), sheen: v('--sheen'), mono: v('--mono') };
+    return { ink: v('--ink'), ink3: v('--ink-3'), slop: v('--slop'), slopDeep: v('--slop-deep'), foam: v('--slop-foam'), red: v('--red'), sheen: v('--sheen'), mono: v('--mono'), sans: v('--sans') };
   }
   const gauges = new Set();
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    colors = palette();
-    for (const g of gauges) g.wake();
-  });
+  const RESPONSE = 0.6; // seconds: how quickly the level reaches its target
 
   // ---------- Letters in flight: one fixed canvas over the page, page coordinates ----------
   const sky = { canvas: null, ctx: null, glyphs: [], w: 0, h: 0, dpr: 1, running: false, last: 0 };
@@ -133,8 +132,13 @@
       this.ticks = opts.ticks || [];
       this.minor = opts.minor || 0.05;
       this.print = opts.print || [];
+      this.handle = !!opts.handle; // a larger pointer, for a gauge people drag
       this.fill = 0; // the level the liquid is heading for
       this.shown = 0; // the level drawn
+      this.vel = 0; // levels per second
+      this.held = false; // while dragged, the level follows the pointer 1:1
+      this.response = RESPONSE;
+      this.damping = 1; // critically damped: no overshoot unless a flick asks for it
       this.goal = 0;
       this.n = 30;
       this.h = new Float32Array(this.n);
@@ -176,6 +180,11 @@
     levelY(f) {
       const g = this.geo;
       return g.gy1 - f * (g.gy1 - g.top);
+    }
+    // Pixels from empty to full, for turning a drag into a level.
+    span() {
+      if (!this.geo) this.measure();
+      return this.geo.gy1 - this.geo.top;
     }
     // Page coordinates of the mouth's middle, and half its width.
     mouth() {
@@ -219,13 +228,41 @@
       }
       skyRun();
     }
-    // Set the level without letters (it still eases there).
+    // Set the level without letters (it still springs there, from wherever it is now).
     set(goal) {
       goal = clamp(goal || 0, 0, 1);
       this.goal = goal;
+      this.held = false;
       if (goal < this.fill + this.pending()) this.drain(goal);
       else this.fill = goal - this.pending();
-      if (reducedMotion()) this.shown = this.fill;
+      if (reducedMotion()) {
+        this.shown = this.fill;
+        this.vel = 0;
+      }
+      this.wake();
+    }
+    // Direct manipulation: while held, the drawn level is exactly `f` (which may run a little past
+    // empty or full, rubber-banded by the caller).
+    hold(f) {
+      this.held = true;
+      this.vel = 0;
+      this.shown = f;
+      this.goal = this.fill = clamp(f, 0, 1);
+      this.wake();
+    }
+    // Let go: spring to `target`, starting at the pointer's velocity (levels per second). Only a
+    // flick earns a little bounce.
+    release(target, vel = 0) {
+      this.held = false;
+      this.goal = this.fill = clamp(target, 0, 1);
+      if (reducedMotion()) {
+        this.shown = this.fill;
+        this.vel = 0;
+      } else {
+        this.vel = vel;
+        this.response = 0.4;
+        this.damping = Math.abs(vel) > 0.6 ? 0.8 : 1;
+      }
       this.wake();
     }
     pending() {
@@ -267,16 +304,30 @@
       colors ||= palette();
       this.step(dt);
       this.draw();
-      const moving = Math.abs(this.fill - this.shown) > 0.0005 || this.drops.length || this.inflight.size || this.h.some((x) => Math.abs(x) > 0.05) || this.v.some((x) => Math.abs(x) > 0.05);
+      const moving = this.held || Math.abs(this.fill - this.shown) > 0.0005 || Math.abs(this.vel) > 0.002 || this.drops.length || this.inflight.size || this.h.some((x) => Math.abs(x) > 0.05) || this.v.some((x) => Math.abs(x) > 0.05);
       const bubbling = this.shown > 0.02 && !reducedMotion();
       if (this.visible && (moving || bubbling)) requestAnimationFrame((t) => this.frame(t));
       else this.running = false;
     }
     step(dt) {
-      const ease = 1 - Math.exp(-dt * 3.2);
       const before = this.shown;
-      this.shown += (this.fill - this.shown) * ease;
-      if (Math.abs(this.fill - this.shown) < 0.0005) this.shown = this.fill;
+      if (!this.held) {
+        // A spring toward the level: stiffness and friction from response and damping.
+        const k = ((2 * Math.PI) / this.response) ** 2;
+        const c = (4 * Math.PI * this.damping) / this.response;
+        const n = Math.max(1, Math.ceil(dt * 240));
+        const h = dt / n;
+        for (let i = 0; i < n; i++) {
+          this.vel += (-k * (this.shown - this.fill) - c * this.vel) * h;
+          this.shown += this.vel * h;
+        }
+        if (Math.abs(this.fill - this.shown) < 0.0005 && Math.abs(this.vel) < 0.002) {
+          this.shown = this.fill;
+          this.vel = 0;
+          this.response = RESPONSE;
+          this.damping = 1;
+        }
+      }
       // A rising or falling level sloshes a little.
       const slosh = (this.shown - before) * 140;
       if (slosh) {
@@ -306,7 +357,7 @@
         }
       }
       const g = this.geo;
-      const surf = this.levelY(this.shown);
+      const surf = Math.max(g.rimY + 6, this.levelY(this.shown));
       this.drops = this.drops.filter((d) => {
         d.vy += GRAVITY * 0.5 * dt;
         d.x += d.vx * dt;
@@ -329,7 +380,7 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, g.w, g.h);
       const r = Math.min(10, (g.gx1 - g.gx0) / 5);
-      const surf = this.levelY(this.shown);
+      const surf = Math.max(g.rimY + 6, this.levelY(this.shown));
 
       // Liquid
       if (this.shown > 0.003) {
@@ -473,16 +524,23 @@
         ctx.stroke();
         ctx.globalAlpha = 1;
         ctx.fillStyle = i === current && this.shown > 0.003 ? c.ink : c.ink3;
-        ctx.font = `${i === current && this.shown > 0.003 ? 700 : 500} 10px ${c.mono}`;
-        ctx.fillText(t.text.toUpperCase(), lx, y);
+        ctx.font = `${i === current && this.shown > 0.003 ? 700 : 500} 11px ${c.sans}`;
+        ctx.fillText(t.text, lx, y);
       });
-      if (this.shown > 0.003 || this.goal > 0) {
+      if (this.shown > 0.003 || this.goal > 0 || this.handle) {
         const y = surf;
+        const s = this.handle ? 1.7 : 1;
+        if (this.handle && this.held) {
+          ctx.fillStyle = 'rgba(216, 48, 31, 0.16)';
+          ctx.beginPath();
+          ctx.arc(g.gx1 + 2 + 7 * s * 0.6, y, 13, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.fillStyle = c.red;
         ctx.beginPath();
         ctx.moveTo(g.gx1 + 2, y);
-        ctx.lineTo(g.gx1 + 9, y - 4.5);
-        ctx.lineTo(g.gx1 + 9, y + 4.5);
+        ctx.lineTo(g.gx1 + 2 + 7 * s, y - 4.5 * s);
+        ctx.lineTo(g.gx1 + 2 + 7 * s, y + 4.5 * s);
         ctx.closePath();
         ctx.fill();
       }

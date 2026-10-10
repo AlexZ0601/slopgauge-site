@@ -8,6 +8,7 @@
   const C = window.SlopgaugeClass;
   const VERDICTS = { human: ['p0', 0, 'Likely human'], mixed: ['p2', 2, 'Possibly AI'], ai: ['p4', 4, 'Likely AI'] };
   const essays = []; // { name, text }
+  let last = null; // the latest results, for the spreadsheet and the printout
 
   function h(tag, attrs, ...kids) {
     const el = document.createElement(tag);
@@ -100,8 +101,8 @@
       { eligible }
     );
     const order = results.map((_, i) => i).sort((a, b) => (results[b].r.docLogit ?? -99) - (results[a].r.docLogit ?? -99));
-    const likely = results.filter((x) => x.r.verdict === 'ai').length;
-    const possibly = results.filter((x) => x.r.verdict === 'mixed').length;
+    const likely = results.filter((x) => !x.r.tooShort && x.r.verdict === 'ai').length;
+    const possibly = results.filter((x) => !x.r.tooShort && x.r.verdict === 'mixed').length;
     $('summary').textContent = `${results.length} essays: ${likely} read as Likely AI-written, ${possibly} as Possibly. ${groups.length ? `${groups.length} group${groups.length === 1 ? '' : 's'} of essays read as AI and share unusual wording.` : 'No essays that read as AI share unusual wording.'}`;
     $('groups').replaceChildren(
       ...groups.map((g, gi) => {
@@ -118,6 +119,7 @@
     );
     const grouped = new Map();
     groups.forEach((g, gi) => g.forEach((i) => grouped.set(i, gi + 1)));
+    last = { results, order, grouped, kind };
     $('rows').replaceChildren(
       ...order.map((i, rank) => {
         const x = results[i];
@@ -143,5 +145,42 @@
   $('form').addEventListener('submit', (e) => {
     e.preventDefault();
     run();
+  });
+
+  // The ranking as a spreadsheet, for a gradebook or a record. Cells that a spreadsheet would run
+  // as a formula are quoted as text.
+  const cell = (v) => {
+    let t = String(v ?? '');
+    if (/^[=+\-@\t\r]/.test(t)) t = `'${t}`;
+    return /[",\n\r]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+  };
+  $('csv').addEventListener('click', () => {
+    if (!last) return;
+    const head = ['Rank', 'Essay', 'Words', 'Reads as AI (%)', 'Verdict', 'Named tells', 'Group'];
+    const rows = last.order.map((i, rank) => {
+      const x = last.results[i];
+      return [
+        rank + 1,
+        x.name,
+        x.r.words,
+        x.r.tooShort ? '' : Math.round(x.r.aiShare * 100),
+        x.r.tooShort ? 'Too short' : VERDICTS[x.r.verdict][2],
+        x.r.findings.filter((f) => f.severity === 'slop').length,
+        last.grouped.has(i) ? `Group ${last.grouped.get(i)}` : '',
+      ];
+    });
+    const csv = '\ufeff' + [head, ...rows].map((r) => r.map(cell).join(',')).join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const a = h('a', { href: url, download: `slopgauge-class-${new Date().toISOString().slice(0, 10)}.csv` });
+    document.body.append(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+  $('print').addEventListener('click', () => {
+    if (!last) return;
+    const kind = $('kind').selectedOptions[0];
+    $('printHead').textContent = `Slopgauge class report · ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} · ${kind ? kind.textContent : ''} · ${last.results.length} essays · slopgauge.com`;
+    print();
   });
 })();
