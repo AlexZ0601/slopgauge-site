@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy Policy | Slopgauge</title>
-  <meta name="description" content="Slopgauge runs entirely in your browser. It collects nothing and sends nothing you read to anyone.">
+  <title>Slopgauge Privacy Policy</title>
+  <meta name="description" content="Privacy policy for the Slopgauge Chrome extension and slopgauge.com. Slopgauge analyzes text on your device and does not collect, sell or share user data.">
   <meta name="theme-color" content="#ebebe4">
   <meta name="color-scheme" content="light">
+  <link rel="canonical" href="https://slopgauge.com/privacy.html">
   <link rel="icon" href="favicon.png">
   <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/funnel-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -18,69 +19,94 @@
     <header class="bar">
       <a class="brand" href="./"><img src="icon.png" alt="" width="28" height="28">Slopgauge</a>
       <nav aria-label="Site">
-        <a href="./">Extension</a>
-        <a href="check.html">Essay checker</a>
-        <a href="class.html">Check a class</a>
-        <a href="privacy.html" aria-current="page">Privacy</a>
-        <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+        <a href="./">Home</a>
       </nav>
     </header>
 
     <main class="doc" id="main">
       <h1>Privacy Policy</h1>
-      <p class="meta label">Effective October 5, 2026</p>
+      <p class="meta label">Slopgauge · Last updated October 10, 2026</p>
 
-      <div class="sheet tldr">
-        <p class="big">0</p>
-        <p><b>Words of what you read sent to us, or to anyone.</b>Slopgauge analyzes text on your device. No account, no analytics, no trackers.</p>
-      </div>
+      <p>This privacy policy explains how the Slopgauge Chrome extension (Chrome Web Store item ID <code>fmfnjbhhknbbdcighkhlindiaeajljie</code>) and the website slopgauge.com, including its essay checker, handle your information. In this policy, “Slopgauge”, “we” and “us” mean the developer of Slopgauge.</p>
 
-      <h2>In short</h2>
-      <p>Slopgauge does not collect or share any personal data. It analyzes text inside your browser and sends nothing you read to anyone. It has no servers and no analytics.</p>
-
-      <h2>What Slopgauge reads</h2>
-      <p>To show its slop meter, Slopgauge reads the text of posts on the pages you visit. It also reads text you choose to check with the right-click menu or paste into its toolbar popup. It analyzes that text with rules that run in your browser, then discards it. The text is never stored and never leaves your device.</p>
-
-      <h2>Google Docs</h2>
-      <p>Google Docs draws documents on a canvas, so their text isn't available on the page. When you open a Google Doc, Slopgauge downloads that document as plain text from Google, the same as choosing File &gt; Download &gt; Plain text, using your existing Google session. That request goes only to Google, for a document you already have open. The text is analyzed in your browser and not stored or sent anywhere else. This is the only network request Slopgauge makes.</p>
-
-      <h2>Deep check</h2>
-      <p>Deep check is an optional, more thorough check you can turn on in the toolbar popup. It runs a neural AI-text detector on your computer, in a hidden page that belongs to the extension. The detector ships inside the extension, so turning it on downloads nothing, and the text it checks never leaves your device.</p>
-
-      <h2>The essay checker on slopgauge.com</h2>
-      <p>The essay checker at <a href="check.html">slopgauge.com/check</a> and the class page at <a href="class.html">slopgauge.com/class</a> run the same detector in your browser tab. Text you paste and files you open there (Word, PDF or plain text) are read and analyzed on your device and are not uploaded or stored. When you compare an essay with a writer's own writing, the style model it uses is downloaded from slopgauge.com and runs in your browser; the texts never leave it. Your choice of "kind of text" is remembered in your browser's local storage. When you open a full report from the extension, the text is passed in the part of the address after the “#”, which browsers never send to a server; the page reads it and removes it from the address bar. Like any website, slopgauge.com is served by a hosting provider (GitHub Pages), which may log standard request data such as IP addresses. We run no analytics on the site.</p>
-
-      <h2>What Slopgauge stores</h2>
-      <p>Your settings, such as which sites and rules you turned off. They are kept in Chrome's extension storage. If you use Chrome sync, Chrome syncs these settings between your devices through your Google account.</p>
-      <p>A history, kept only on this device unless you turn it off in the toolbar popup: how many posts you scrolled past each day and their meter levels (for the last 30 days), and, for posts whose page shows who wrote them, that author's name and profile address with the levels of their last 20 posts. It powers the "Your feed" report and lines like "7 of their last 9 posts measured Some slop or worse." It is never synced or sent anywhere, and "Clear" in the popup deletes it. To count each post once, Slopgauge keeps a short one-way fingerprint of recent posts; it cannot be turned back into the text. Slopgauge never stores the text of anything you read.</p>
-
-      <h2>What Slopgauge never does</h2>
+      <h2>Summary</h2>
       <ul>
-        <li>Run servers or send your data to any server, including ours (we don't have any).</li>
-        <li>Track you or show you ads.</li>
-        <li>Share data with third parties.</li>
-        <li>Load code from the internet. All of its code ships inside the extension.</li>
+        <li>Slopgauge analyzes text on your device. The text you read or check is never sent to us or to anyone else.</li>
+        <li>We do not collect, sell, rent or share any personal or sensitive user data.</li>
+        <li>We have no servers that receive user data, no accounts, no analytics, no ads and no trackers.</li>
+        <li>The settings and the feed history the extension keeps are stored only in your browser. You can turn the history off and delete it at any time.</li>
       </ul>
 
-      <h2>Permissions</h2>
+      <h2>1. Information the extension accesses</h2>
+      <p>Slopgauge's single purpose is to show how AI-written (“sloppy”) the text you read looks. To do that, it accesses:</p>
+      <ul>
+        <li><b>Website content:</b> the text of posts on the pages you visit, so it can show a slop meter on each post.</li>
+        <li><b>Text you choose to check:</b> text you select and check with the right-click “Check with Slopgauge” option, or paste into the toolbar popup.</li>
+        <li><b>Google Docs you open:</b> Google Docs draws documents on a canvas, so their text isn't on the page. When you open a Google Doc, Slopgauge downloads that document as plain text from Google (the same as File &gt; Download &gt; Plain text), using your existing Google session. That request goes only to Google, for a document you already have open.</li>
+      </ul>
+      <p><b>How it is used:</b> this text is analyzed in your browser, only to compute the meter and report shown to you. It is held in memory while it is analyzed and then discarded. It is not stored, not sent to us, and not sent to any third party.</p>
+      <p><b>Deep check (optional, off by default):</b> when you turn it on in the toolbar popup, the same text is also scored by a neural AI-text detector that ships inside the extension and runs in a hidden page that belongs to the extension. Turning it on downloads nothing, and the text never leaves your device.</p>
+
+      <h2>2. Information stored on your device</h2>
+      <p><b>Settings.</b> Your choices, such as sites or rules you turned off, are saved in Chrome's extension storage. If you use Chrome sync, Chrome syncs these settings between your devices through your Google account.</p>
+      <p><b>Feed history.</b> Unless you turn it off in the toolbar popup, Slopgauge keeps a history on this device to show the “Your feed” report and lines like “7 of their last 9 posts measured Some slop or worse”. It contains:</p>
+      <ul>
+        <li>for each of the last 30 days, how many posts you scrolled past, their meter levels, and the sites they were on (for example linkedin.com);</li>
+        <li>for posts whose page shows who wrote them, the author's display name, their profile handle and the meter levels of their last 20 posts, for up to 3,000 authors;</li>
+        <li>a short one-way fingerprint of up to 5,000 recent posts, so each post is counted once. A fingerprint cannot be turned back into text.</li>
+      </ul>
+      <p>The feed history never contains the text of what you read. It is never synced and never sent anywhere.</p>
+      <p><b>Retention.</b> Days older than 30 days and the least recently seen authors beyond 3,000 are deleted automatically. “Clear” in the toolbar popup deletes the whole history at once. Uninstalling Slopgauge deletes everything it stored.</p>
+
+      <h2>3. Information we collect</h2>
+      <p>None. Slopgauge does not transmit user data to us. It has no accounts, analytics, crash reports, advertising identifiers or cookies of its own.</p>
+
+      <h2>4. Sharing and sale of data</h2>
+      <p>We do not sell, rent, share or transfer user data to anyone. User data is not used for advertising, for creditworthiness or lending, or for any purpose unrelated to Slopgauge's single purpose.</p>
+
+      <h2>5. Third-party services</h2>
+      <ul>
+        <li><b>Google.</b> Slopgauge's only network request is the Google Docs download described above, which goes to Google. If you use Chrome sync, Google syncs your settings. Google's own privacy policy applies to both.</li>
+        <li><b>GitHub Pages.</b> slopgauge.com is hosted on GitHub Pages, which may log standard request data such as IP addresses, as described in GitHub's privacy statement. We run no analytics on the site.</li>
+      </ul>
+      <p>Slopgauge does not load code from the internet. All of its code and models ship inside the extension.</p>
+
+      <h2>6. The essay checker on slopgauge.com</h2>
+      <p>The essay checker at <a href="check.html">slopgauge.com/check</a> and the class page at <a href="class.html">slopgauge.com/class</a> run the same detector in your browser tab. Text you paste and files you open there (Word, PDF or plain text) are read and analyzed on your device; they are not uploaded or stored. When you compare an essay with a writer's own writing, a style model is downloaded from slopgauge.com and runs in your browser; the texts never leave it. Your choice of “kind of text” is remembered in your browser's local storage. When you open a full report from the extension, the text is passed in the part of the address after the “#”, which browsers never send to a server; the page reads it and removes it from the address bar.</p>
+
+      <h2>7. Permissions</h2>
       <table>
         <tr><th>Permission</th><th>Why</th></tr>
         <tr><td>Read pages on all sites</td><td>To find the posts on pages you visit and show a meter on each. The text is analyzed in your browser only.</td></tr>
-        <tr><td><code>storage</code></td><td>To save your settings.</td></tr>
+        <tr><td><code>storage</code></td><td>To save your settings and the optional feed history on your device.</td></tr>
         <tr><td><code>activeTab</code></td><td>So the toolbar popup can show a summary for the page you're on.</td></tr>
         <tr><td><code>contextMenus</code></td><td>For the right-click “Check with Slopgauge” option.</td></tr>
         <tr><td><code>offscreen</code></td><td>To run the optional Deep check detector in a hidden extension page, only after you turn it on.</td></tr>
         <tr><td><code>scripting</code></td><td>To start Slopgauge on a tab that was already open when you installed or updated it, when you open the toolbar popup there.</td></tr>
       </table>
 
-      <h2>Chrome Web Store User Data Policy</h2>
-      <p>Slopgauge's use of information complies with the Chrome Web Store User Data Policy, including the Limited Use requirements. It does not collect user data, so there is nothing to sell or transfer.</p>
+      <h2>8. Your choices</h2>
+      <ul>
+        <li>Turn Slopgauge off on any site, or turn off individual rules, in the toolbar popup.</li>
+        <li>Turn off the feed history, or delete it with “Clear”, in the toolbar popup.</li>
+        <li>Leave Deep check off, or turn it off at any time.</li>
+        <li>Uninstall the extension to remove it and everything it stored.</li>
+      </ul>
 
-      <h2>Changes</h2>
-      <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
+      <h2>9. Security</h2>
+      <p>Because the text you read is analyzed on your device and is never transmitted, there is no copy of it on any server to protect. The extension's own pages, including the Deep check page, are blocked by its content security policy from connecting to any server, and the Google Docs download goes from the Google Docs tab you have open to Google, over HTTPS.</p>
 
-      <h2>Contact</h2>
-      <p>Questions: <a href="mailto:support@slopgauge.com">support@slopgauge.com</a></p>
+      <h2>10. Children's privacy</h2>
+      <p>Slopgauge does not collect personal information from anyone, including children under 13.</p>
+
+      <h2>11. Chrome Web Store User Data Policy</h2>
+      <p>Slopgauge's use of information complies with the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
+
+      <h2>12. Changes to this policy</h2>
+      <p>If this policy changes, the new version will be posted on this page with a new “Last updated” date.</p>
+
+      <h2>13. Contact</h2>
+      <p>Questions about this policy or your data: <a href="mailto:support@slopgauge.com">support@slopgauge.com</a></p>
     </main>
   </div>
 
