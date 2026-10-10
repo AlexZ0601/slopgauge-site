@@ -55,14 +55,123 @@
         nodes.push(s ? h('span', { 'data-s': String(s.start) }, piece) : piece);
         continue;
       }
-      const tip = [s && s.logit !== null && s.label !== 'human' ? `AI-likeness of this passage: ${pct(sigmoid(s.logit))}` : '', ...covering.map((m) => `${m.f.label}: ${m.f.why}`)].filter(Boolean).join('\n');
-      const el = h('span', { class: [sentenceCls, covering.length ? 'r' : ''].filter(Boolean).join(' '), title: tip }, piece);
+      const el = h('span', { class: [sentenceCls, covering.length ? 'r' : ''].filter(Boolean).join(' '), 'data-tip': '' }, piece);
+      tips.set(el, { score: s && s.logit !== null && s.label !== 'human' ? sigmoid(s.logit) : null, tells: covering.map((m) => m.f) });
       if (s) el.dataset.s = String(s.start);
       for (const m of covering) m.els.push(el);
       nodes.push(el);
     }
     return { nodes, marks: marks.filter((m) => m.els.length) };
   }
+
+  // ---------- Why is this marked: a small card that grows out of the mark it explains ----------
+  const tips = new WeakMap();
+  const pop = h('div', { class: 'pop', role: 'tooltip', id: 'pop', hidden: '' });
+  document.body.append(pop);
+  let popFor = null;
+  let pinned = false;
+  let at = null; // where the pointer met the mark, to pick the right line of a wrapped mark
+  let showT = 0;
+  let hideT = 0;
+  function place() {
+    if (!popFor) return;
+    const rects = [...popFor.getClientRects()];
+    if (!rects.length) return closePop(true);
+    const r = (at && rects.find((q) => at.y >= q.top - 2 && at.y <= q.bottom + 2)) || rects[0];
+    const w = pop.offsetWidth;
+    const ph = pop.offsetHeight;
+    const nav = document.querySelector('.nav');
+    const top = nav ? nav.getBoundingClientRect().bottom : 0;
+    const above = r.top - ph - 10 > top + 6;
+    const ax = Math.max(r.left, Math.min(r.right, at ? at.x : r.left + r.width / 2));
+    const left = Math.max(8, Math.min(innerWidth - w - 8, ax - w / 2));
+    pop.style.left = `${left + scrollX}px`;
+    pop.style.top = `${(above ? r.top - ph - 10 : r.bottom + 10) + scrollY}px`;
+    pop.style.transformOrigin = `${ax - left}px ${above ? '100%' : '0%'}`;
+  }
+  function openPop(el, pin) {
+    clearTimeout(hideT);
+    clearTimeout(showT);
+    const t = tips.get(el);
+    if (!t) return;
+    const fresh = pop.hidden || pop.classList.contains('out');
+    if (popFor && popFor !== el) popFor.classList.remove('open');
+    popFor = el;
+    pinned = pin;
+    const kids = [];
+    if (t.score !== null) kids.push(h('p', null, h('span', { class: 'score' }, `AI-likeness of this passage: ${pct(t.score)}`)));
+    for (const f of t.tells) kids.push(h('p', null, h('b', null, f.label), f.why));
+    if (!kids.length) return;
+    pop.replaceChildren(...kids);
+    pop.hidden = false;
+    pop.classList.remove('out');
+    place();
+    if (fresh) {
+      pop.classList.remove('in');
+      void pop.offsetWidth;
+      pop.classList.add('in');
+    }
+    el.classList.add('open');
+  }
+  function closePop(now) {
+    clearTimeout(showT);
+    clearTimeout(hideT);
+    if (popFor) popFor.classList.remove('open');
+    popFor = null;
+    pinned = false;
+    if (pop.hidden) return;
+    if (now || reduced()) {
+      pop.hidden = true;
+      return;
+    }
+    pop.classList.remove('in');
+    pop.classList.add('out');
+    hideT = setTimeout(() => {
+      pop.hidden = true;
+      pop.classList.remove('out');
+    }, 120);
+  }
+  const tipOf = (e) => e.target instanceof Element && e.target.closest('#marked [data-tip]');
+  $('marked').addEventListener('pointerover', (e) => {
+    if (e.pointerType !== 'mouse' || pinned) return;
+    const el = tipOf(e);
+    if (!el) return;
+    at = { x: e.clientX, y: e.clientY };
+    clearTimeout(hideT);
+    // Once a card is up, moving to the next mark switches at once; the first one waits a beat.
+    if (!pop.hidden && !pop.classList.contains('out')) openPop(el, false);
+    else {
+      clearTimeout(showT);
+      showT = setTimeout(() => openPop(el, false), 70);
+    }
+  });
+  $('marked').addEventListener('pointerout', (e) => {
+    if (e.pointerType !== 'mouse' || pinned) return;
+    const to = e.relatedTarget instanceof Element ? e.relatedTarget : null;
+    if (to && (to.closest('#marked [data-tip]') || to.closest('.pop'))) return;
+    clearTimeout(showT);
+    hideT = setTimeout(() => closePop(), 140);
+  });
+  $('marked').addEventListener('click', (e) => {
+    const el = tipOf(e);
+    if (!el) return;
+    at = { x: e.clientX, y: e.clientY };
+    if (popFor === el && pinned) closePop();
+    else openPop(el, true);
+  });
+  pop.addEventListener('pointerenter', () => clearTimeout(hideT));
+  pop.addEventListener('pointerleave', (e) => {
+    if (!pinned && e.pointerType === 'mouse') hideT = setTimeout(() => closePop(), 140);
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (!popFor || !(e.target instanceof Element)) return;
+    if (!e.target.closest('.pop') && !e.target.closest('#marked [data-tip]')) closePop();
+  });
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popFor) closePop();
+  });
+  addEventListener('resize', () => popFor && place());
+  addEventListener('scroll', () => popFor && place(), { passive: true });
 
   const light = (marks, on) => {
     for (const m of marks) for (const el of m.els) el.classList.toggle('lit', on);
@@ -216,6 +325,7 @@
   }
 
   function run() {
+    closePop(true);
     const text = $('text').value;
     const report = R.analyze(text, $('kind').value);
     const { nodes, marks } = marked(text, report);
@@ -235,11 +345,15 @@
     $('form').hidden = true;
     const box = $('report');
     box.hidden = false;
+    box.classList.remove('arrive');
+    void box.offsetWidth;
+    box.classList.add('arrive');
     box.scrollIntoView({ behavior: 'auto', block: 'start' });
     box.focus({ preventScroll: true });
     // Pour the tells in: copies of their letters fly to the gauge, which fills to the AI-like share.
     gauge.set(0);
     gauge.shown = 0;
+    gauge.vel = 0;
     const seen = new Set();
     const items = [];
     let k = 0;
@@ -256,6 +370,7 @@
   }
 
   function edit(clear) {
+    closePop(true);
     $('report').hidden = true;
     $('form').hidden = false;
     if (clear) $('text').value = '';
@@ -310,6 +425,23 @@
     $('text').focus();
   });
   $('clear').addEventListener('click', () => edit(true));
+  // A report on paper: what was checked, when, and as what kind of text.
+  $('print').addEventListener('click', () => {
+    const kind = $('kind').selectedOptions[0];
+    $('printHead').textContent = `Slopgauge report · ${new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })} · ${kind ? kind.textContent : ''} · ${plural(R.words($('text').value), 'word', 'words')} · slopgauge.com`;
+    closePop(true);
+    print();
+  });
+  // ⌘↩ or Ctrl+↩ measures from either text box.
+  const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  $('shortcut').textContent = mac ? '⌘↩' : 'Ctrl+↩';
+  for (const id of ['text', 'known'])
+    $(id).addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        $('form').requestSubmit();
+      }
+    });
   $('edit').addEventListener('click', () => edit(false));
   $('again').addEventListener('click', () => edit(true));
   $('form').addEventListener('submit', (e) => {

@@ -44,6 +44,7 @@
     } else f = [0, 0.27, 0.47, 0.67, 0.87][sc.level];
     return { all, slop: all.filter((x) => x.severity === 'slop'), level: sc.level, label: sc.label, f };
   }
+  window.SlopgaugeHome = { measure, pill }; // for js/levels.js
 
   // Overlapping tells merge into one marked stretch; each gets a key that survives edits elsewhere.
   function stretches(text, slop) {
@@ -147,7 +148,7 @@
     $('postName').textContent = 'You';
     $('postRole').textContent = 'Draft · not posted';
     $('postAvatar').textContent = 'Y';
-    $('postAvatar').style.background = '#121310';
+    $('postAvatar').style.background = '#1d1d1f';
   }
   box.addEventListener('input', () => {
     if ($('postName').textContent !== 'You') asYou();

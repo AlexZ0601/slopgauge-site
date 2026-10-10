@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found | Slopgauge</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="/favicon.png">
+  <link rel="stylesheet" href="/style.css?v=5">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="/"><img src="/icon.png" alt="" width="24" height="24">Slopgauge</a>
+      <nav class="nav-links" aria-label="Site">
+        <a href="/check.html">Essay checker</a>
+        <a href="/class.html">Check a class</a>
+        <a href="/#about">About</a>
+        <a href="/privacy.html">Privacy</a>
+      </nav>
+      <a class="btn small" href="https://chromewebstore.google.com/detail/fmfnjbhhknbbdcighkhlindiaeajljie">Add to Chrome</a>
+    </div>
+  </header>
+
+  <main id="main" class="lost center">
+    <div class="wrap">
+      <canvas class="gauge" id="gauge" role="img" aria-label="An empty gauge"></canvas>
+      <h1>Nothing to measure here.</h1>
+      <p class="lede">This page isn’t here. It may have moved, or the link may be wrong.</p>
+      <div class="actions">
+        <a class="btn" href="/">Go to the home page</a>
+        <a class="more-link" href="/check.html">Check an essay</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="legal"><span>Slopgauge · Free, and it runs on your device.</span><span><a href="/privacy.html">Privacy policy</a> · <a href="mailto:support@slopgauge.com">support@slopgauge.com</a></span></div>
+    </div>
+  </footer>
+  <script src="/js/site.js?v=5"></script>
+  <script src="/js/gauge.js?v=5"></script>
+  <script>new window.SlopgaugeGauge.Gauge(document.getElementById('gauge'), { minor: 0.05, print: ['SLOPGAUGE', 'EMPTY'] });</script>
+</body>
+</html>
