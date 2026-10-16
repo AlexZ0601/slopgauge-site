@@ -1,0 +1,84 @@
+{
+ "groups": [
+  [
+   "Stock words and phrases",
+   [
+    "banned-word",
+    "empty-phrase",
+    "chatbot-residue",
+    "puffery",
+    "fake-verb",
+    "weasel",
+    "metadiscourse"
+   ]
+  ],
+  [
+   "Manufactured drama",
+   [
+    "binary-contrast",
+    "contrast-tail",
+    "negative-listing",
+    "dramatic-fragment",
+    "colon-reveal",
+    "question-reveal",
+    "rhetorical-setup",
+    "throat-clearing",
+    "faux-insight",
+    "kicker"
+   ]
+  ],
+  [
+   "Shape and rhythm",
+   [
+    "rule-of-three",
+    "repetitive-openers",
+    "transition-pile",
+    "superficial-analysis",
+    "recap",
+    "em-dash"
+   ]
+  ],
+  [
+   "Social-post habits",
+   [
+    "engagement-bait",
+    "emoji-bullets",
+    "arrow-list",
+    "fancy-text",
+    "label-lines",
+    "markdown-leak"
+   ]
+  ]
+ ],
+ "examples": {
+  "banned-word": "This framework will help your team delve into the data and leverage every insight.",
+  "chatbot-residue": "Certainly! Here is a revised version of your cover letter. I hope this helps!",
+  "binary-contrast": "It's not just a job. It's a calling.",
+  "contrast-tail": "We build for people, not metrics. We ship for users, not awards. We grow through trust, not ads.",
+  "throat-clearing": "Here's the thing: most meetings could be an email.",
+  "faux-insight": "Here's what nobody tells you about saving money: start small.",
+  "colon-reveal": "The secret to great writing: clarity.",
+  "question-reveal": "The result? A team that finally ships on time.",
+  "superficial-analysis": "The city opened three new libraries in 2024, highlighting its commitment to education.",
+  "puffery": "The new policy marks a pivotal moment in the evolving landscape of public health.",
+  "metadiscourse": "It's important to note that the results were mixed.",
+  "empty-phrase": "In today's fast-paced world, small businesses need to adapt.",
+  "weasel": "Experts agree that remote work is here to stay.",
+  "fake-verb": "The museum serves as a reminder of the city's industrial past.",
+  "negative-listing": "Not a sprint. Not a marathon. A lifestyle.",
+  "dramatic-fragment": "We tried everything. Nothing worked. Then we listened. Everything changed.",
+  "rhetorical-setup": "Bottom line: if your team can't explain the plan, there isn't one.",
+  "kicker": "She kept every receipt for ten years. And that makes all the difference.",
+  "recap": "In conclusion, clear communication, steady habits and real feedback are the keys to growth.",
+  "em-dash": "We launched in March — and the response was huge — bigger than we ever expected — truly.",
+  "emoji-bullets": "Three wins this week:\n✅ Shipped the beta\n✅ Hired our first engineer\n✅ Closed a pilot",
+  "arrow-list": "What I learned:\n→ Listen first\n→ Lead with empathy\n→ Celebrate small wins",
+  "fancy-text": "𝐁𝐢𝐠 𝐧𝐞𝐰𝐬: we just raised our seed round.",
+  "label-lines": "Strategy: focus on one market at a time.\nExecution: ship something small every week.\nCulture: hire people who stay curious.\nResult: steady growth without burnout.",
+  "engagement-bait": "What do you think? Drop a comment below and repost if you agree.",
+  "transition-pile": "Moreover, the plan saves money. Furthermore, it saves time. Additionally, it is simple to run. Consequently, we should adopt it.",
+  "rule-of-three": "Our team values honesty, curiosity, and courage. We build fast, test often, and learn always. The result is speed, quality, and trust.",
+  "repetitive-openers": "We tested the app with real users last spring. We changed the onboarding twice. We cut the price in half for students. We now have twelve paying schools.",
+  "markdown-leak": "**Key insight:** customers want speed.\n## Next steps\nShip the faster checkout first."
+ }
+}
