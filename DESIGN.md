@@ -89,3 +89,24 @@ GitHub Pages caches files for 10 minutes. Bump the `?v=` on CSS and JS links whe
 - Reports print cleanly (`@media print`): the marked text, the gauge and the tally, with a line
   saying when and as what kind of text it was checked.
 - Rebuild the vendored runtimes with `npm install && npm run build:voice`.
+
+## Pages and the scripts that keep them in step
+- `index.html` home, `check.html` essay checker, `class.html` check a class, `teachers.html` for
+  teachers, `pricing.html` plans and Pro activation, `tells.html` the field guide, `flagged.html`
+  for writers wrongly flagged, `press.html` press kit, `privacy.html` the policy (kept plain, with a
+  minimal header, for the Chrome Web Store), `404.html`.
+- `node scripts/layout.mjs` writes the shared navigation bar and footer into the pages and tags
+  Chrome Web Store links with UTM parameters (the store dashboard reports listing views by
+  campaign; the site runs no analytics). Run it after changing either.
+- `node scripts/tells.mjs` rebuilds the field guide from `js/detector.js` and
+  `scripts/tells-examples.json`, and fails if the detector doesn't flag an example.
+
+## Pro (`js/pro-config.js`, `js/pro.js`, `js/history.js`)
+- Polar (polar.sh) is the merchant of record. `js/pro-config.js` holds its public organization ID
+  and checkout links; while they're empty, buy buttons fall back to email.
+- A license key is checked against Polar's public validation endpoint (no secret needed), at most
+  once a day, with two weeks' grace offline. Only the key is sent.
+- Saved classes live in IndexedDB on the teacher's computer. Each new essay is compared with the
+  student's earlier essays in that class that read as human-written (the latest six), using the
+  same LUAR model and thresholds as the checker's "Compare with their own writing".
+- Everything free stays free; Pro only adds.
